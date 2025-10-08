@@ -1,0 +1,5 @@
+SELECT name, count(1) FROM
+t1 LEFT JOIN t2 USING (id)
+GROUP BY name
+
+Кол-во строк: 4
