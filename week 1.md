@@ -190,8 +190,18 @@ null 1
   # [1] Задача
 
   ```sql
-
+SELECT dt, 
+         count,
+         CONCAT((count - LAG(count) OVER (ORDER BY dt)) / (LAG(count) OVER (ORDER BY dt)) * 100, '%') as Prcent_growth
+FROM(
+    SELECT date_trunc('month', created_at) as dt, 
+           count (DISTINCT title) as count
+    FROM table
+    GROUP BY dt
+    ) t1
+ORDER BY dt
 ```
+  # [2] Задача
 
 
  </details>
