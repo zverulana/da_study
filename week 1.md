@@ -199,11 +199,54 @@ FROM(
     FROM table
     GROUP BY dt
     ) t1
-ORDER BY dt
+ORDER BY dt;
 ```
-  # [2] Задача
+ # [2] Задача
+    ```sql
+WITH t1 AS (SELECT good_id, inventory_dt,    
+ABS (inventory_cnt - LAG(inventory_cnt, 1, 0) OVER (PARTITION BY good_id ORDER BY inventory_dt)) AS movement
+FROM inventory
+)
 
+SELECT good_id, inventory_dt, movement as inventory_cnt
+FROM t1
+WHERE movement != 0;
+```
 
+  # [3] Задача
+    ```sql
+SELECT transaction_id
+FROM transaction
+WHERE amount_rur > LAG(amount_rur, 1, 0) OVER (PARTITION BY customer_id ORDER BY transaction_ddtt)
+AND amount_rur > LEAD(amount_rur, 1, 0) OVER (PARTITION BY customer_id ORDER BY transaction_ddtt);
+```
+
+# [4] Задача
+    ```sql
+SELECT good_id, start_date,
+CASE WHEN LEAD(start_date) OVER (PARTITION BY good_id ORDER BY start_date) IS NOT NULL
+THEN LEAD(start_date) OVER (PARTITION BY good_id ORDER BY start_date) - INTERVAL '1 day'
+ELSE '9999-12-31':: DATE
+END AS date_finish,
+price
+FROM t1
+```
+
+# [5] Задача - в процессе
+    ```sql
+WITH min_sal AS(
+    SELECT *,
+    DENSE_RANK () OVER (ORDER BY amount) as rank
+    FROM salary
+    WHERE VALUE_DAY between '2023-05-01' and '2023-05-31'
+),
+tmp AS(
+SELECT *,
+amount - LAG(amount, 1, 0) OVER (PARTITION BY EMPL_FIO, EMPL_DEP ORDER BY VALUE_DAY) as diff)
+
+SELECT EMPL_FIO, diff
+FROM min_sal LEFT JOIN tmp ON min_sal.EMPL_FIO = tmp.EMPL_FIO AND min_sal.EMPL_DEP = tmp.EMPL_DEP
+WHERE rank <= 3
+```
  </details>
  
-  
