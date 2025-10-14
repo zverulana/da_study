@@ -434,7 +434,211 @@ ORDER BY total_amt
 ```
 # [4] Задача 
 ```sql
-SELECT a 
+SELECT t1.a as color_1, t2.a as color_2
+FROM 
+a t1 CROSS JOIN a t2 ON t1.a < t2.a
+ORDER BY color_1, color_2
 ```
 
 </details>
+
+<details>
+  <summary>[6] FIRST_VALUE/LAST_VALUE [UPPER]</summary>
+
+# [1] Задача 
+```sql
+WITH tmp AS(
+    SELECT product_id,
+    FIRST_VALUE(ds) OVER (PARTITION BY product_id ORDER BY ds) as first,
+    LAST_VALUE(ds) OVER (PARTITION BY product_id ORDER BY ds RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as last
+    FROM fact_purchases
+)
+SELECT distinct product_id  from fact_purchases
+WHERE ds BETWEEN '2023-01-05' AND '2023-05-31' AND first != last
+ORDER BY product_id, last
+```
+
+  </details>
+
+  </details>
+
+<details>
+  <summary>[7] GROUP BY [BASE]</summary>
+
+# [1] Задача 
+```sql
+WITH tmp AS (SELECT user_id, count(DATE_TRUNC('month', date)) as month_cnt
+FROM orders)
+SELECT user_id FROM tmp
+HAVING count(distinct month) = 6
+```
+
+# [2] Задача 
+```sql
+SELECT cat.name FROM category as cat
+INNER JOIN Article as art ON cat.id = art.category_id
+GROUP BY cat.name
+HAVING avg(deposit_price) > 5000
+ORDER BY cat.name
+```
+
+# [3] Задача 
+```sql
+SELECT date, count(*) as vid_count,
+count(distinct user_id)
+FROM table
+GROUP BY date
+ORDER BY date 
+```
+
+# [3] Задача 
+```sql
+-- 1
+SELECT tariff, count(distinct abonent_id) FROM abnt 
+GROUP BY tariff
+
+-- 2
+SELECT tariff, avg(all_clc) FROM abnt LEFT JOIN clcd USING (abonent_id)
+GROUP BY tariff
+WHERE table_business_month BETWEEN '2019-05-01' AND '2019-05-31'
+
+-- 3
+SELECT tariff, avg(data_traffic_gb) FROM abnt LEFT JOIN traf USING (abonent_id)
+GROUP BY tariff
+WHERE table_business_month BETWEEN '2019-04-01' AND '2019-04-31'
+
+```
+# [5] Задача 
+Как можно получить уникальные значения без использования SELECT DISTINCT?
+Через count(*), а потом HAVING count = 1
+ИЛИ ROW_NUMBER
+
+# [6] Задача 
+```sql
+-- 1
+SELECT
+DATE_TRUNC('day', order_date) as order_date,
+name,
+COUNT(payment_date) as cnt
+FROM orders LEFT JOIN platforms USING (platform)
+GROUP BY order_date, name
+
+-- 2
+SELECT distinct expiriens_id, count(distinct order_id) as cnt
+FROM orders
+GROUP BY expiriens_id
+ORDER BY count(distinct order_id) DESC
+LIMIT 5
+
+-- 3
+SELECT user_id
+FROM orders
+WHERE order_status = 'Забронировано'
+GROUP BY user_id
+HAVING count(distinct order_id) > 1 
+```
+
+# [7] Задача 
+```sql
+SELECT client_id FROM (
+SELECT client_id, sum(sku_cnt * weight) as s
+FROM fct_sales INNER JOIN dim_sku USING (sku_id)
+GROUP BY client_id
+WHERE dttm >= CURRENT_DATE - INTERVAL '1 month'
+  AND dttm < CURRENT_DATE)
+WHERE s > 2
+```
+# [8] Задача 
+```sql
+WITH tmp AS (SELECT user_id,
+DATE_TRUNC ('month', order_date) as date
+FROM orders)
+
+SELECT user_id
+FROM tmp
+GROUP BY user_id
+HAVING count(distinct date) = 6
+
+```
+
+# [9] Задача 
+```sql
+SELECT customer_id
+FROM
+sales INNER JOIN products USING (product_id)
+GROUP BY customer_id
+HAVING count(distinct product_category) = 
+(select count(distinct product_category from products))
+
+```
+
+# [10] Задача 
+```sql
+SELECT name, COALESLE(sum(order_sum), 0) as s
+FROM programs p LEFT JOIN orders o ON p.id = o.program_id AND o.state = 'success' 
+GROUP BY name
+ORDER BY s DESC
+```
+
+# [11] Задача 
+```sql
+SELECT name, COALESLE(sum(order_sum), 0) as s
+FROM programs p LEFT JOIN orders o ON p.id = o.program_id 
+AND o.state = 'success' 
+AND p.direction = 'Аналитика'
+AND o.buy_date >= '2021-10-01'
+AND o.buy_date < '2022-01-01'
+GROUP BY name
+HAVING sum(order_sum) >= 1000000
+ORDER BY s DESC
+```
+
+# [12] Задача 
+
+200
+
+
+# [13] Задача 
+
+1 - выведет максимальный
+
+# [14] Задача 
+
+50 - в каждой группе один максимальный
+
+# [15] Задача 
+```sql
+SELECT department_name
+FROM department_id LEFT JOIN employee_tb USING (department_id)
+GROUP BY department_name
+HAVING (count distinct employee_id) > 10
+ORDER BY (count distinct employee_id) DESC, department_id ASC
+```
+
+# [16] Задача 
+
+2 3 1 2 3 4
+
+# [17] Задача 
+```sql
+-- 1
+select min(A), max(a), min(B), max(B) from table1 cross join table2 
+-- 2
+SELECT 
+select(
+    min(a), max(a), sum(a), count(a) FROM table1
+) CROSS JOIN
+SELECT (
+ min(b), max(b), sum(b), count(b) FROM table2
+)
+```
+# [18] Задача 
+```sql
+SELECT distinct employee_id
+FROM table
+WHERE date_start >= '2024-01-01' AND date_end < '2025-01-01'
+GROUP BY employee_id
+HAVING count(distinct date_start) >= 2
+```
+
+  </details>
