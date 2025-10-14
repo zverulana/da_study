@@ -189,7 +189,7 @@ null 1
   
   # [1] Задача
 
-  ```sql
+```sql
 SELECT dt, 
          count,
          CONCAT((count - LAG(count) OVER (ORDER BY dt)) / (LAG(count) OVER (ORDER BY dt)) * 100, '%') as Prcent_growth
@@ -202,7 +202,7 @@ FROM(
 ORDER BY dt;
 ```
  # [2] Задача
-    ```sql
+```sql
 WITH t1 AS (SELECT good_id, inventory_dt,    
 ABS (inventory_cnt - LAG(inventory_cnt, 1, 0) OVER (PARTITION BY good_id ORDER BY inventory_dt)) AS movement
 FROM inventory
@@ -214,7 +214,7 @@ WHERE movement != 0;
 ```
 
   # [3] Задача
-    ```sql
+```sql
 SELECT transaction_id
 FROM transaction
 WHERE amount_rur > LAG(amount_rur, 1, 0) OVER (PARTITION BY customer_id ORDER BY transaction_ddtt)
@@ -222,7 +222,7 @@ AND amount_rur > LEAD(amount_rur, 1, 0) OVER (PARTITION BY customer_id ORDER BY 
 ```
 
 # [4] Задача
-    ```sql
+```sql
 SELECT good_id, start_date,
 CASE WHEN LEAD(start_date) OVER (PARTITION BY good_id ORDER BY start_date) IS NOT NULL
 THEN LEAD(start_date) OVER (PARTITION BY good_id ORDER BY start_date) - INTERVAL '1 day'
@@ -233,7 +233,7 @@ FROM t1
 ```
 
 # [5] Задача !!
-    ```sql
+```sql
 with temp_1 as (SELECT * FROM(	
 	SELECT distinct *,
    	 DENSE_RANK () OVER (ORDER BY amount) as rank
@@ -253,7 +253,7 @@ order by amount;
 ```
 
 # [6] Задача 
-    ```sql
+```sql
 select hittime, 
 actual, 
 LAG(actual, 1, 0) OVER (order by hittime) as previos 
@@ -266,7 +266,7 @@ FROM(
 ```
 
 # [7] Задача 
-    ```sql
+```sql
 WITH tmp AS( 
     SELECT num,
     LAG(num) OVER () as q1,
@@ -277,7 +277,7 @@ SELECT num FROM tmp
 WHERE num <> q1+1 AND num = q2-1
 ```
 # [8] Задача 
-    ```sql
+```sql
 select 
 some_id - diff + 1 as start,
 some_id - 1 as finish
@@ -289,7 +289,7 @@ FROM(
 where diff > 2
 ```
 # [9] Задача 
-    ```sql
+```sql
 WITH temp as (
 SELECT DATE_TRUNC ('month', order_date) as month,
 count(distinct client_id) as cnt
@@ -310,13 +310,13 @@ END as diff FROM
 Выведет все строки, потому что результатом where будет True (unknowm or true - это true)
 
 # [2] Задача 
-    ```sql
+```sql
 SELECT id 
 FROM Art
 WHERE id_category IS NULL
 ```
 # [3] Задача 
-    ```sql
+```sql
 table_summer as(
     select a.id, 1 as summer_flag
     from
@@ -327,7 +327,7 @@ select a.id from art left join table_summer
 where summer_flag is null
 ```
 # [4] Задача 
-    ```sql
+```sql
 with money as (
 	    select c.id as client_id, 
 	    SUM(amount) as q1
@@ -342,7 +342,7 @@ with money as (
 	WHERE money.q1 < 5000
 ```
 # [5] Задача 
-    ```sql
+```sql
 --1)
     SELECT Client_fio 
     FROM CLIENTS 
@@ -368,7 +368,7 @@ FROM CLIENTS c LEFT JOIN DOCUMENTS d USING (Client_id)
 WHERE Client_id IS NULL
 ```
 # [6] Задача 
-    ```sql
+```sql
 SELECT d.name FROM
 DEPARTMENT d LEFT JOIN EMPLOYEE e ON d.id = e.department_id 
 AND LOWER(e.name) LIKE '%z%' 
@@ -379,7 +379,7 @@ WHERE e.name IS NULL
 В первом запросе сначала выполняется джойн, потом where, так что строки из первой таблицы удалятся. Во втором запросе все строки из первой таблицы останутся
 
 # [8] Задача 
-    ```sql
+```sql
 SELECT client_id FROM
 clients cl LEFT JOIN credits cr USING (client_id)
 WHERE cr.credit_id IS NULL
