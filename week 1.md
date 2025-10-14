@@ -406,6 +406,35 @@ ____
 <details>
   <summary>[5] JOIN'ы - минус один в секции ON + нечеткие JOIN'ы [UPPER]</summary>
 
-
+# [1] Задача 
+```sql
+WITH temp as(
+    SELECT user_id, DATE_TRUNC('month', date) as month
+    FROM logins
+)
+SELECT month, count(distinct user_id) as cnt
+FROM temp t1 LEFT JOIN temp t2 ON t1.user_id = t2.user_id AND t1.month = DATE_TRUNC('month',t2.month-1)
+GROUP BY month
+```
+# [2] Задача 
+```sql
+SELECT prod_cat,
+SUM(price * cnt) as total_amt
+FROM sale s LEFT JOIN product p ON s.prod_nm = p.prod_nm AND (sale_dt BETWEEN dt_from and dt_to) 
+group by prod_cat
+ORDER BY total_amt
+```
+# [3] Задача 
+```sql
+SELECT prod_cat,
+SUM(price * cnt) as total_amt
+FROM sale s LEFT JOIN product p ON s.prod_nm = p.prod_nm AND (sale_dt BETWEEN dt_from and dt_to) 
+group by prod_cat
+ORDER BY total_amt
+```
+# [4] Задача 
+```sql
+SELECT a 
+```
 
 </details>
