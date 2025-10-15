@@ -968,3 +968,286 @@ WHERE dr = 2
 ```
 
 </details>
+
+<details>
+  <summary>[10] SUM + OVER [UPPER]</summary>
+
+# [1] Задача 
+```sql
+-- 1
+SELECT transaction_date, SUM(transaction_sum) FROM money
+GROUP BY transaction_date
+-- 2
+WITH tmp AS(
+    SELECT transaction_date, SUM(transaction_sum) as sm FROM money
+    GROUP BY transaction_date
+)
+SELECT transaction_date, 
+SUM(sm) OVER (ORDER BY transaction_date) as sm_2 FROM money
+ORDER BY transaction_date
+
+-- 3
+WITH tmp AS(
+    SELECT transaction_date, SUM(transaction_sum) as sm FROM money
+    GROUP BY transaction_date
+)
+SELECT transaction_date, 
+SUM(sm) OVER () as sm_2 FROM money
+ORDER BY transaction_date
+```
+# [2] Задача 
+```sql
+WITH tmp AS (SELECT user_id, category,
+SUM(amount) OVER (PARTITION BY user_id) as sm_all,
+SUM(amount) OVER (PARTITION BY user_id, category) as sm_category,
+count(distinct category) OVER (PARTITION BY user_id) as category_cnt
+FROM table)
+
+SELECT user_id, category,
+ROUND(sm_category/sm_all * 100 , 2) as rate
+FROM tmp
+WHERE category_cnt = (SELECT count(distinct category) FROM table))
+GROUP BY user_id, category
+```
+
+# [3] Задача 
+```sql
+select fs.client_id,
+fs.dttm,
+sum(ds.price*fs.sku_cnt) over (partition by client_id order by fs.dttm) as cum_sum
+from fct_sales fs
+join dim_sku ds on fs.sku_id = ds.sku_id
+```
+# [4] Задача 
+```sql
+WITH tmp AS (SELECT department_id, 
+SUM(salalry) as sm
+FROM department d LEFT JOIN employee e ON d.id = e.department_id)
+SELECT department_id, sm,
+SUM(sm) OVER (ORDER BY sm)
+FROM tmp
+```
+# [5] Задача 
+- Какие значения вы получите в столбце count_categories?
+3 3 3
+- Какие значения вы получите в столбце new_amount?
+100 60 40
+
+# [6] Задача 
+```sql
+WITH tmp AS (SELECT channel, 
+    sold_quantity * gross_price as total_sum_by_channel
+    FROM fact_sales_monthly fsm 
+    JOIN dim_gross_price dgp USING (product_code) 
+    JOIN dim_customer dc USING (customer_code)
+    WHERE fsm.fiscal_year = '2021'
+    GROUP BY channel
+)
+    SELECT channel, 
+    total_sum_by_channel / 1000000 as gross_sales_mln,
+    ROUND(total_sum_by_channel * 100/ SUM(total_sum_by_channel) OVER (), 2) as percentage
+    FROM tmp
+    ORDER BY gross_sales_mln DESC;
+```
+# [7] Задача 
+```sql
+-- 1
+SELECT distinct an_name, an_cost FROM orders o INNER JOIN analysis a ON o.ord_an = a.an_id
+WHERE o.ord_datetime::date = '2024-08-05'
+   OR o.ord_datetime::date BETWEEN '2024-08-06' AND '2024-08-12'
+
+-- 2
+SELECT 
+    DATE_FORMAT(o.ord_datetime, '%Y-%m') AS year_month,
+    g.gr_name,
+    COUNT(o.ord_id) AS monthly_sales,
+    SUM(COUNT(o.ord_id)) OVER (PARTITION BY g.gr_id ORDER BY DATE_FORMAT(o.ord_datetime, '%Y-%m')) AS cumulative_sales
+FROM Orders o
+JOIN Analysis a ON o.ord_an = a.an_id
+JOIN Groups g ON a.an_group = g.gr_id
+GROUP BY year_month, g.gr_id, g.gr_name
+ORDER BY year_month, g.gr_name;
+```
+# [8] Задача 
+1 - 7 7 7 7
+2 - 3 3 7 7
+3 - 1 2 3 4  
+4 - 3 null 7 null 
+5 - 3 6 7 7
+</details>
+
+<details>
+  <summary>[11] SELF JOIN [BASE]</summary>
+
+# [1] Задача 
+```sql
+SELECT c1.id, c1.points,
+count(distinct c2.id) + 1 as rank
+FROM competition c1 LEFT JOIN competition c2 ON c1.points < c2.points
+GROUP BY c1.id,c1.points
+```
+# [2] Задача 
+```sql
+SELECT e1.id
+FROM employee e1 INNER JOIN employee e2 ON e1.birth < e2.birth AND e2.chif_flg = true AND e1.chif_flg = false AND e1.department_id = e2.department_id
+```
+# [3] Задача 
+```sql
+SELECT t1.id,
+COUNT(distinct t2.id) + 1 as rate
+FROM team t1 LEFT JOIN team t2 ON t1.points < t2.points
+GROUP BY t1.id
+```
+# [4] Задача 
+да
+
+# [5] Задача 
+```sql
+SELECT e1.id
+FROM employee e1 INNER JOIN employee e2 ON e1.birthday_date < e2.birthday_date AND e2.chief_of_department = true AND e1.chief_of_department = false AND e1.department_id = e2.department_id
+```
+</details>
+
+<details>
+  <summary>[11] SELF JOIN [BASE]</summary>
+
+# [1] Задача 
+```sql
+SELECT fio,
+COUNT(
+    CASE WHEN mark = 2
+    THEN 1 ELSE 0
+    END
+    FROM journal
+    ) as two_count
+FROM journal 
+GROUP BY fio
+HAVING COUNT(CASE WHEN mark = 5 THEN 1 END) >= 10
+```
+# [2] Задача 
+```sql
+select 
+	distance_to_pump <= mpg * fuel_left as _final_flag
+from DB
+```
+
+# [3] Задача 
+```sql
+SELECT user_id
+FROM table
+GROUP BY user_id
+HAVING 
+COUNT(CASE WHEN video_id = 1 THEN 1 ELSE 0 END) > 0 AND
+COUNT(CASE WHEN video_id = 3 THEN 1 ELSE 0 END) > 0 AND
+COUNT(CASE WHEN video_id = 2 THEN 1 ELSE 0 END) = 0
+```
+
+# [4] Задача 
+```sql
+SELECT 
+	CUSTOMER_RK,
+	REPORT_DT,
+    
+    	SUM(TRANSACTION_RUR_AMT * (MCC_GROUP_CD = 'Супермаркеты') ) as TR_SMARKET_RUR_AM,
+    	SUM(TRANSACTION_RUR_AMT * (MCC_GROUP_CD = 'Кафе и рестораны') ) as TR_RESTAURANT_RUR_AM,
+    	SUM(TRANSACTION_RUR_AMT * (MCC_GROUP_CD = 'АЗС') ) as TR_FUEL_RUR_AMT
+    
+GROUP BY 1, 2
+```
+
+# [5] Задача 
+```sql
+SELECT
+Customer_name
+FROM orders
+GROUP BY Customer_name
+HAVING sum(Prod_Name = 'IPhone') > 0 AND sum(Prod_Name = 'Airpods') = 0
+```
+
+# [6] Задача 
+```sql
+select appn
+from t
+where ('2021-03-01' between date_from and date_to) or ('2019-03-01' between date_from and date_to)
+```
+  </details>
+
+  <details>
+  <summary>[13] Case when [UPPER]</summary>
+
+# [1] Задача 
+```sql
+with cte as (select *,
+case
+when now() - activation_date <= 7 then 'week'
+when now() - activation_date <= 30 then 'month'
+when now() - activation_date <= 90 then 'quarter'
+when now() - activation_date <= 180 then 'half_year'
+else 'more_half_year'
+end as div_groups
+)
+select count(abonent_id) as count_abon,
+div_groups
+from cte
+group by div_groups
+```
+  </details>
+
+ <details>
+  <summary>[14] Подзапросы [BASE]</summary>
+
+# [1] Задача 
+```sql
+SELECT 
+    id, 
+    name, 
+    salary
+FROM 
+    employee
+WHERE 
+    salary = (SELECT MAX(salary) FROM employee)
+```
+
+# [2] Задача 
+```sql
+SELECT e.department_id, d.name, e.name
+FROM department d JOIN employee e ON d.id = e.department_id
+WHERE e.id IN (
+    SELECT max(id) 
+    FROM employee
+    GROUP BY department_id
+)
+```
+# [3] Задача 
+```sql
+WITH tmp as (
+ SELECT account_id, max(t_date) as max_date
+  FROM t
+WHERE t_date <= 'X'
+GROUP BY account_id
+)
+SELECT account_id, sum_val
+FROM t 
+WHERE (account_id, t_date) in tmp
+```
+# [4] Задача 
+```sql
+select name
+from Passenger
+where LENGTH(name) = (
+    select max(LENGTH(name)) as len from Passenger
+    )
+```
+
+# [5] Задача 
+```sql
+SELECT MAX(num) AS max_unique_num
+FROM MyNumbers
+WHERE num IN (
+    SELECT num
+    FROM MyNumbers
+    GROUP BY num
+    HAVING COUNT(*) = 1
+)
+```
+</details>
