@@ -640,5 +640,331 @@ WHERE date_start >= '2024-01-01' AND date_end < '2025-01-01'
 GROUP BY employee_id
 HAVING count(distinct date_start) >= 2
 ```
+# [19] Задача 
+```sql
+SELECT count(distinct student.id) FROM student_in_class JOIN class ON student_in_class.class = class.id
+WHERE class = '10B'
+```
+# [20] Задача 
+```sql
+WITH sent AS (
+    SELECT DAY_TRUNC('day', date) as day, 
+    user_id_sender, user_id_receiver    
+    FROM table
+    WHERE action = 'sent'
+)
+accepted AS (
+    SELECT DAY_TRUNC('day', date) as day, 
+    user_id_sender, user_id_receiver
+    FROM table
+    WHERE action = 'accepted'
+)
+SELECT day, count(a.user_id_receiver)/count(s.user_id_sender) * 100 as acceptance_rate
+FROM sent s JOIN accepted a ON s.user_id_sender = a.user_id_sender 
+AND s.user_id_receiver = a.user_id_receiver
+AND s.day = a.day
+GROUP BY s.day
+HAVING COUNT(a.user_id_receiver) > 0
+ORDER BY s.day
+```
+
+# [21] Задача 
+```sql
+WITH num_cnt AS (SELECT num, count(num) as cnt
+FROM table
+GROUP BY num)
+SELECT max(num) FROM num_cnt
+WHERE cnt = 1
+```
+# [22] Задача 
+```sql
+-- 1
+WITH view_wid AS (SELECT date, user_client_id
+FROM events
+WHERE page_current_url = '/catalog'
+AND action_type = 'view' AND widget_id = '522955')
+
+click_wid AS (SELECT date, user_client_id
+FROM events
+WHERE page_current_url = '/catalog'
+AND action_type = 'click' AND widget_id = '522955')
+
+SELECT date, ROUND(count(distinct c.user_client_id)/count(distinct v.user_client_id), 2) * 100 as conversion_rate 
+FROM
+view_wid v LEFT JOIN click_wid c ON v.date = c.date AND c.user_client_id = v.user_client_id
+GROUP BY date
+ORDER BY date
+
+-- 2
+WITH proscroll AS (SELECT date, user_client_id
+FROM events
+WHERE page_current_url = '/catalog'
+AND action_type = 'page_view')
+
+view AS (SELECT date, user_client_id
+FROM events
+WHERE page_current_url = '/catalog'
+AND action_type = 'view' AND widget_id = '522957')
+
+SELECT date, ROUND(count(distinct v.user_client_id)/count(distinct p.user_client_id), 2) * 100 as proscroll 
+FROM
+proscroll p LEFT JOIN view cv ON p.date = v.date AND p.user_client_id = v.user_client_id
+GROUP BY date
+ORDER BY date
+```
+
+# [23] Задача 
+```sql
+SELECT store_id, 
+AVG(total_amount) as aov,
+count(distinct client_id) as clients_cnt
+FROM transactions
+GROUP BY store_id
+```
+# [24] Задача 
+ 1) 200
+ 2) 1
+ 3) 50
 
   </details>
+
+  <details>
+  <summary>[8] ROW_NUMBER [BASE]</summary>
+
+# [1] Задача 
+```sql
+WITH tmp_1 AS(
+    SELECT id, adr, dt,
+    ROW_NUMBER() OVER (ORDER BY dt DESC) as rn
+    WHERE dt <= '2023-01-01 00:00:00'
+)
+SELECT id, adr, dt FROM tmp_1
+WHERE rn = 1
+```
+# [2] Задача 
+```sql
+WITH temp AS(
+    SELECT user_id, instance_id,
+    ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY date_borrowed DESC) as rn
+    FROM Oplog
+)
+SELECT user_id, instance_id FROM remp
+WHERE rn <= 3
+```
+
+# [3] Задача 
+```sql
+WITH sucessful AS(
+    SELECT customer_id, transaction_id,amount_rur, transaction_dttm
+    FROM table
+    WHERE succes_flag = 'True'
+)
+money AS (SELECT 
+customer_id
+FROM sucessful
+GROUP BY customer_id
+HAVING sum(amount_rur) > 100000
+)
+rn AS(
+    SELECT customer_id, transaction_id,amount_rur, transaction_dttm,
+    ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_dttm ASC) as rn
+    FROM money INNER JOIN sucessful USING (customer_id)
+)
+SELECT transaction_id, customer_id, amount_rur,transaction_dttm FROM rn
+WHERE rn = 1
+```
+# [4] Задача 
+Без каких частей оконная функция не сработает: OVER, PARTITION BY, ORDER BY?
+
+Ответ: без OVER
+
+# [5] Задача 
+```sql
+WITH temp AS(
+SELECT
+LEAD(name) OVER (department_id ORDER BY salary) as next_name,,
+LEAD(salary) OVER (department_id ORDER BY salary) as next_salary,
+ROW NUMBER() OVER (PARTITION BY department_id, salary ORDER BY id DESC) as rn
+)
+SELECT * FROM temp WHERE rn = 1
+```
+# [6] Задача 
+```sql
+-- 1
+WITH tmp AS (SELECT user_id, program_id,
+ROW_NUMBER () OVER (PARTITION BY user_id ORDER BY buy_date) as rn
+FROM orders
+where buy_date is not null)
+
+SELECT user_id, name FROM tmp INNER JOIN programs p ON tmp.program_id = p.id
+WHERE rn = 1
+
+-- 2
+WITH tmp AS (SELECT user_id, program_id,
+ROW_NUMBER () OVER (PARTITION BY user_id ORDER BY buy_date) as rn
+FROM orders
+where buy_date is not null)
+
+SELECT user_id, name FROM tmp INNER JOIN programs p ON tmp.program_id = p.id
+WHERE rn = 3
+
+-- 3
+WITH tmp AS (SELECT user_id, program_id,
+ROW_NUMBER () OVER (PARTITION BY user_id ORDER BY buy_date) as rn,
+count(order_id) OVER (PARTITION BY user_id) as cnt
+FROM orders
+where buy_date is not null)
+
+SELECT user_id, program_id,
+FROM tmp
+WHERE (rn = 3 AND cnt >= 3) OR (rn = 1 AND cnt < 3)
+```
+# [7] Задача 
+```sql
+-- a
+WITH client_id, COALESLE(avg(sum), 0) as avg_sum
+FROM 1 LEFT JOIN 2 USING (card_id)
+WHERE EXTRACT (month from date) = 5
+GROUP BY client_id
+
+-- b
+WITH tmp AS(
+    SELECT client_id, card_id, sum(sum) as sum_total
+    FROM 2 LEFT JOIN 1 USING (card_id)
+    GROUP BY client_id, card_id
+)
+tmp_2 AS(
+    SELECT client_id, card_id,
+    ROW_NUMBER() OVER (PARTITION BY client_id ORDER BY sum_total DESC) as rn
+    FROM tmp
+)
+SELECT client_id, card_id FROM tmp_2
+WHERE rn = 1
+```
+
+# [8] Задача 
+```sql
+WITH tmp AS(
+    SELECT DATE_TRUNC ('month', date) as month, category, good, sum(sum) as total_sum
+    FROM table
+    GROUP BY month, category, good
+)
+top AS(
+    SELECT month, category, good, total_sum,
+    RANK() OVER (PARTITION BY month, category ORDER BY total_sum DESC) as r
+    FROM tmp
+)
+
+SELECT month, category, good, total_sum
+FROM top
+WHERE r <= 5
+ORDER BY month, category, r
+```
+
+# [9] Задача 
+```sql
+WITH tmp AS(
+SELECT *,
+ROW_NUMBER() OVER (PARTITION BY id ORDER BY raw_dt DESC) as rn
+FROM abnt
+)
+SELECT * FROM tmp 
+WHERE rn = 1
+```
+# [10] Задача 
+```sql
+WITH tmp AS(
+SELECT user_id, order_id
+ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY order_timespent DESC) as rn
+FROM abnt
+)
+SELECT user_id, order_id  FROM tmp 
+WHERE rn = 1
+```
+
+# [11] Задача 
+```sql
+WITH tmp AS(
+    SELECT t.dt as date_trx, t.currency, c.cur_rate, t.trx,
+    ROW_NUMBER() OVER (PARTITION BY t.dt, t.currency ORDER BY c.dt DESC) as rn
+    FROM trx_tb1 t JOIN cur_tb1 c ON t.currency = c.currency AND c.dt <= t.dt
+)
+SELECT date_trx, SUM(trx*cur_rate) as sum
+WHERE rn = 1
+GROUP BY date_trx
+ORDER BY date_trx
+```
+
+</details>
+
+<details>
+  <summary>[9] RANK / DENSE_RANK [BASE]</summary>
+
+# [1] Задача 
+```sql
+SELECT
+    p.ProductName,
+    COUNT(o.OrderID) as amount,
+    SUM(p.Price) as total,
+    DENSE_RANK() OVER (ORDER BY COUNT(o.OrderID) DESC) as rank
+FROM Orders o
+LEFT JOIN Products p ON o.ProductID = p.ProductID
+GROUP BY p.ProductName, p.ProductID
+ORDER BY amount DESC
+```
+
+# [2] Задача 
+```sql
+WITH tmp AS (EMPL_FIO, EMPL_DEP,
+DENSE_RANK () OVER (PARTITION BY EMPL_DEP ORDER BY AMOUNT DESC) as dr
+FROM table
+WHERE DATE_TRUNC('month', VALUE_DAY) = ‘2023-04-01’)
+SELECT EMPL_FIO, EMPL_DEP FROM tmp
+WHERE dr = 2
+```
+
+# [3] Задача 
+```sql
+WITH tmp AS (col,
+DENSE_RANK () OVER (ORDER BY col DESC) as dr
+FROM table)
+SELECT col FROM tmp
+WHERE dr = 2
+```
+# [4] Задача 
+```sql
+WITH tmp AS (SELECT EMPL_FIO,
+DENSE_RANK () OVER (ORDER BY salary DESC) as dr,
+ROW_NUMBER() OVER (PARTITION BY EMPL_FIO ORDER BY age) as rn
+FROM table
+)
+SELECT EMPL_FIO FROM tmp
+WHERE dr = 2 AND rn = 1
+```
+# [5] Задача 
+```sql
+WITH tm AS(
+    program_id, count(order_id) as cnt
+    FROM programs LEFT JOIN orders USING (program_id)
+    WHERE buy_date >= DATE_TRUNC('month', current_date)
+    AND state = 'success' 
+)
+
+tmp AS (SELECT program_id,
+RANK () OVER (ORDER BY cnt DESC) as dr,
+FROM table
+)
+SELECT program_id FROM tmp
+WHERE dr <= 5
+```
+
+# [6] Задача 
+```sql
+WITH tmp AS (col,
+DENSE_RANK () OVER (ORDER BY col DESC) as dr
+FROM table)
+SELECT col FROM tmp
+WHERE dr = 2
+```
+
+</details>
