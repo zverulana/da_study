@@ -758,13 +758,13 @@ WITH sucessful AS(
     SELECT customer_id, transaction_id,amount_rur, transaction_dttm
     FROM table
     WHERE succes_flag = 'True'
-)
+),
 money AS (SELECT 
 customer_id
 FROM sucessful
 GROUP BY customer_id
 HAVING sum(amount_rur) > 100000
-)
+),
 rn AS(
     SELECT customer_id, transaction_id,amount_rur, transaction_dttm,
     ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_dttm ASC) as rn
@@ -1022,7 +1022,8 @@ join dim_sku ds on fs.sku_id = ds.sku_id
 ```sql
 WITH tmp AS (SELECT department_id, 
 SUM(salalry) as sm
-FROM department d LEFT JOIN employee e ON d.id = e.department_id)
+FROM department d LEFT JOIN employee e ON d.id = e.department_id
+GROUP BY department_id)
 SELECT department_id, sm,
 SUM(sm) OVER (ORDER BY sm)
 FROM tmp
