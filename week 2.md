@@ -1,3 +1,6 @@
+<details>
+  <summary>16 - 22 октября</summary>
+
 # [1] Задача (16 октября)
  ```sql
 -- Найдите топ-3 сотрудников в каждом отделе по зарплате, выведите их имена, отделы и ранг. Исключите сотрудников с зарплатой ниже 30000
@@ -66,10 +69,28 @@ where amount > 1000
   # [6] Задача (21 октября)
 
   ```sql
--- 
+-- Выведите сумму заказов по клиентам и их долю от общей суммы всех заказов, но только для клиентов с более чем 2 заказами
+
+with tmp as (
+    select 
+        customer_name, 
+        sum(amount) as total_client,
+        count(order_id) as cnt
+    from sandbox.customers_zvereva c 
+    join sandbox.orders_zvereva o using (customer_id)
+    group by customer_name
+)
+
+select 
+    customer_name, 
+    total_client,
+    ROUND(total_client / (select sum(amount) from sandbox.orders_zvereva) * 100,2) as rate
+from tmp
+where cnt > 2
 
  ```
 
 
 
 
+<details>
