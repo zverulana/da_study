@@ -104,11 +104,7 @@ where rank <= CEIL(0.1 * tmp.cnt)
 
  ```
 
-<details>
-
-
-<details>
-  <summary>23 - 30 октября</summary>
+</details><details> <summary>23 - 30 октября</summary>
 
   # [8] Задача (23 октября)
 
@@ -136,5 +132,4 @@ from tmp join sandbox.employees_zvereva e using (department_id)
 
  ```
 
-
-  <details>
+</details>
