@@ -89,8 +89,52 @@ from tmp
 where cnt > 2
 
  ```
+  # [7] Задача (22 октября)
 
+  ```sql
+-- Покажите сотрудников, чья зарплата входит в топ-10% по их отделу, с указанием ранга.
 
+with tmp as(select department_name, first_name, last_name, salary,
+rank() over (partition by department_id order by salary desc) as rank,
+count(id) over (partition by department_id) as cnt
+from sandbox.departments_zvereva JOIN sandbox.employees_zvereva using (department_id))
+select department_name, first_name, last_name
+from tmp 
+where rank <= CEIL(0.1 * tmp.cnt)  
+
+ ```
+
+<details>
 
 
 <details>
+  <summary>23 - 30 октября</summary>
+
+  # [8] Задача (23 октября)
+
+  ```sql
+-- Выведите заказы с указанием, сколько дней прошло с предыдущего заказа того же клиента
+ 
+select order_id, customer_name,
+order_date - LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) as diff
+from sandbox.orders_zvereva INNER JOIN sandbox.customers_zvereva USING (customer_id)
+
+ ```
+  # [9] Задача (24 октября)
+
+  ```sql
+-- Найдите отделы, где средняя зарплата выше 50000, и выведите сотрудников с их рангом по зарплате в этих отделах
+ 
+with tmp as(select department_name, department_id
+from sandbox.departments_zvereva d join sandbox.employees_zvereva e using (department_id)
+group by department_id
+having avg(salary) > 50000)
+
+select department_name, first_name, last_name,
+rank() over (partition by department_name order by salary desc) as rank
+from tmp join sandbox.employees_zvereva e using (department_id)
+
+ ```
+
+
+  <details>
