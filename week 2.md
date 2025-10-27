@@ -131,5 +131,47 @@ rank() over (partition by department_name order by salary desc) as rank
 from tmp join sandbox.employees_zvereva e using (department_id)
 
  ```
+   # [10] Задача (25 октября)
+
+  ```sql
+-- Выведите клиентов, у которых есть заказы с суммой выше средней по всем заказам, и добавьте их общее количество заказов
+ 
+select customer_id, count(order_id) as cnt from (
+  select customer_id, 
+  order_id
+  from sandbox.orders_zvereva
+  group by customer_id, order_id
+  having amount > (
+  select avg(amount) from sandbox.orders_zvereva)
+)
+group by customer_id
+
+ ```
+# [11] Задача (26 октября)
+
+  ```sql
+-- Выведите сотрудников и их зарплаты, добавив столбец с общей суммой зарплат в их отделе, но только для отделов с более чем 5 сотрудниками
+ 
+with tmp as(select distinct department_name, department_id,
+sum(salary) over (partition by department_name) as sm,
+count(e.id) over (partition by department_name) as cnt
+from sandbox.departments_zvereva d join sandbox.employees_zvereva e using (department_id))
+select first_name, last_name, salary, sm from
+sandbox.employees_zvereva join tmp using (department_id)
+where cnt > 5
+order by salary desc
+
+ ```
+
+# [12] Задача (27 октября)
+
+  ```sql
+-- Покажите заказы, где сумма заказа выше средней суммы заказов за тот же месяц, с указанием клиента
+ 
+swith tmp as (select order_id, amount, customer_id,
+avg(amount) over(partition by date_trunc('month', order_date)) as ag
+from sandbox.orders_zvereva)
+select order_id, customer_name 
+from tmp join sandbox.customers_zvereva c ON tmp.customer_id = c.customer_id and tmp.amount > tmp.ag
 
 </details>
