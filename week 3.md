@@ -501,3 +501,39 @@ def can_form_string(words, target):
  ```
 
 </details>
+
+
+
+<details>
+  <summary>Задачи с собесов</summary>
+
+<details>
+  <summary>[1] Списки и циклы, базовые задачки [BASE]</summary>
+
+ # [1]
+  ```python
+
+ ```
+
+  </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </details>
