@@ -173,5 +173,17 @@ avg(amount) over(partition by date_trunc('month', order_date)) as ag
 from sandbox.orders_zvereva)
 select order_id, customer_name 
 from tmp join sandbox.customers_zvereva c ON tmp.customer_id = c.customer_id and tmp.amount > tmp.ag
+ ```
+
+ # [13] Задача (28 октября)
+
+  ```sql
+-- Выведите сотрудников с их зарплатами и кумулятивной суммой зарплат по отделу, отсортированной по дате найма
+ 
+select first_name, last_name, salary, department_name, 
+sum(salary) over (partition by department_id order by hire_date) as sm
+from sandbox.departments_zvereva join sandbox.employees_zvereva using (department_id)
+order by department_name, hire_date
+ ```
 
 </details>
