@@ -158,7 +158,7 @@ def remove_duplicates(lst):
     return list(set(lst))
  ```
 # [14]
-    ```python
+```python
   '''14. Отсортировать список по убыванию'''
 
 def sort_desc(lst):
@@ -166,7 +166,7 @@ def sort_desc(lst):
     return lst
  ```
 # [15]
-    ```python
+```python
   '''15. Перевернуть список'''
 
 def reverse_list(lst):
@@ -176,7 +176,7 @@ def reverse_list(lst):
 print(reverse_list([1, 2, 3, 4]))
  ```
 # [16]
-    ```python
+```python
   '''16. Объединить два списка без дубликатов'''
 
 def merge_lists(lst1, lst2):
@@ -185,7 +185,7 @@ def merge_lists(lst1, lst2):
 print(merge_lists([1, 2], [2, 3]))
  ```
 # [17]
-    ```python
+```python
   '''17. Вернуть список только с четными числами'''
 def even_numbers(lst):
     for i in lst:
@@ -196,7 +196,7 @@ def even_numbers(lst):
 print(even_numbers([1, 2, 3, 4]))
  ```
 # [18]
-    ```python
+```python
    '''18. Посчитать количество положительных чисел в списке'''
 def count_positive(lst):
     cnt = 0
@@ -207,7 +207,7 @@ def count_positive(lst):
 print(count_positive([1, -2, 3, 4]))
  ```
 # [19]
-     ```python
+```python
    '''19. Создать список квадратов чисел'''
 def square_numbers(lst):
     k =[]
@@ -217,7 +217,7 @@ def square_numbers(lst):
 print(square_numbers([1, 2, 3]))
  ```
 # [20]
-      ```python
+```python
    '''20. Объединить два списка в список кортежей'''
 def pair_lists(lst1, lst2):
     return list(zip(lst1, lst2)) 
@@ -225,7 +225,7 @@ def pair_lists(lst1, lst2):
 print(pair_lists([1, 2], ["a", "b"])) 
  ```
 # [21]
-      ```python
+```python
    '''21. Проверить, является ли строка строкой с уникальными символами'''
 def has_unique_chars(s):
     if len(set(s)) == len(s):
@@ -237,7 +237,7 @@ print(has_unique_chars("abcdef"))  # True
 print(has_unique_chars("aabbcc"))
  ```
 # [22]
-      ```python
+```python
    '''22. Найти индекс первого вхождения символа в строке'''
 def first_occurrence(s, char):
     return s.find(char)
@@ -245,7 +245,7 @@ def first_occurrence(s, char):
 print(first_occurrence("hello", "l"))
  ```
 # [23]
-      ```python
+ ```python
    '''23. Проверить, является ли число простым'''
 def is_prime_simple(n):
     if n <= 1:
@@ -258,7 +258,7 @@ def is_prime_simple(n):
     return True
  ```
 # [24]
-      ```python
+```python
    '''24. Найти количество слов в строке'''
 def word_count(s):
     cnt = 0
@@ -325,31 +325,31 @@ def is_empty(s):
       return False
  ```
 # [31]
-   ```python
+```python
  '''31. Перевести строку в нижний регистр'''
 def to_lower_case(s):
     return s.lower()
  ```
 # [32]
-    ```python
+```python
  '''32. Перевести строку в верхний регистр'''
 def to_upper_case(s):
     return s.upper()
  ```
 # [33]
-     ```python
+```python
  '''33. Найти разницу двух списков'''
 def list_difference(lst1, lst2):
     return [i for i in lst1 if i not in lst2]
  ```
 # [34]
-     ```python
+```python
  '''34. Найти индекс элемента в спискев'''
 def find_index(lst, value):
   return lst.index(value)
  ```
 # [35]
-     ```python
+```python
  '''35. Проверить, является ли число четным'''
 def is_even(n):
     if n % 2 == 0:
@@ -358,7 +358,7 @@ def is_even(n):
       return False
  ```
 # [36]
-     ```python
+```python
  '''36. Проверить, является ли число нечетным'''
 def is_odd(n):
     if n % 2 != 0:
@@ -367,14 +367,14 @@ def is_odd(n):
       return False
  ```
 # [37]
-     ```python
+```python
  '''37. Найти второе по величине число в списке'''
 def second_largest(lst):
     return sorted(lst)[2]
 
  ```
  # [38]
-     ```python
+```python
  '''38. Поменять местами два элемента списка'''
 def swap_elements(lst, i, j):
     lst[i], lst[j] = lst[j], lst[i]
@@ -383,13 +383,13 @@ def swap_elements(lst, i, j):
 
  ```
 # [39]
-      ```python
+```python
  '''39. Найти общие элементы двух строк'''
 def common_chars(s1, s2):
     return [i for i in s1 if i in s2]
  ```
 # [40]
-      ```python
+```python
  '''40. Проверить, является ли число палиндромом'''
 def is_number_palindrome(n):
     if str(n) == str(n)[::-1]:
@@ -398,7 +398,7 @@ def is_number_palindrome(n):
       return False
  ```
  # [41]
-      ```python
+```python
  '''41. Найти сумму всех простых чисел до n'''
 def sum_primes(n):
     if n < 2:
@@ -423,13 +423,13 @@ def sum_primes(n):
     return total
  ```
  # [42]
-      ```python
+```python
  '''42. Удалить дубликаты из списка, сохранив порядок'''
 def remove_duplicates_ordered(lst):
     return list(set(lst))
  ```
 # [43]
-      ```python
+```python
   '''43. Проверить, является ли строка панграммой'''
 import string
 
@@ -438,13 +438,13 @@ def is_pangram(s):
   return len(set(string.ascii_lowercase) - set(s_lower)) == 0
  ```
  # [44]
-      ```python
+ ```python
 '''44. Найти пересечение двух списков'''
 def list_intersection(lst1, lst2):
     return [i for i in lst1 if i in lst2]
  ```
 # [45]
-       ```python
+```python
 '''45. Найти наибольшую общую подстроку двух строк'''
 def list_intersection(lst1, lst2):
     return [i for i in lst1 if i in lst2]
