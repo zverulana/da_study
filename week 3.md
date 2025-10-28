@@ -573,7 +573,7 @@ def local_min (x):
      return x[i]
 local_min(X)
  ```
- 
+
 # [8]
 01) 6 - 2
 02) 1,2,3,4
@@ -585,11 +585,76 @@ local_min(X)
 
 
 
+<details>
+  <summary>[2] Множества [BASE]</summary>
 
+# [1]
+  ```python
+'''На вход подается массив. Функция должна посчитать, сколько можно составить пар одинаковых элементов'''
 
+'''Моя версия кода (не такой красивенький)'''
 
+def func (x):
+  cnt = 0
+  cnt_2 = 0
+  tmp = []
+  dic = {}
+  for i in x:
+    if i not in tmp:
+     tmp.append(i)
+     for g in x:
+       if i == g:
+        cnt +=1
+     if cnt % 2 ==0:
+      cnt_2 += int(cnt/2)
+     cnt = 0
+  return cnt_2
 
+'''Чатик подсказал решение получше'''
+def func(arr):
+    freq = {}
+    for num in arr:
+        freq[num] = freq.get(num, 0) + 1
+    return sum(cnt // 2 for cnt in freq.values())
+ ```
 
+# [2]
+  ```python
+'''Дан массив целых чисел и число K. Найти два таких (не обязательно различных) числа в массиве, сумма которых равна K. Если таких чисел нет - вывести null или ничего'''
+
+'''Моя версия кода (опять большой получился, но работает)'''
+
+def func (input, k):
+  flag = True
+  s = []
+  for i in range (len(input)):
+    for g in range (i+1, len(input)):
+      if input[i] + input[g] == k:
+        s.append([input[i], input[g]])
+        flag = True
+      elif flag != True:
+        flag = False
+    if s == []:
+      flag = False
+  return s if flag != False else 'Таких чисел нет'
+ ```
+# [3]
+  ```python
+'''Получить пересечение этих двух списков без повторений'''
+
+def func(list_a, list_b):
+  return list(set([i for i in list_a if i in list_b]))
+ ```
+
+ # [4]
+  ```python
+'''Получить уникальные значения'''
+def func(list_a):
+  return list(set(list_a))
+
+ ```
+
+</details>
 
 
 
