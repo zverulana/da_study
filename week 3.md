@@ -78,8 +78,8 @@ def replace_spaces(s):
     return ''.join(new)
 
 print(replace_spaces("hello world"))
-
  ```
+# [7] 
 ```python
  '''7. Удалить все цифры из строки'''
 def remove_digits(s):
@@ -94,6 +94,7 @@ def remove_digits(s):
 print(remove_digits("hello123"))
 
  ```
+# [8] 
  ```python
  '''8. Вернуть первые n символов строки'''
 
@@ -109,7 +110,7 @@ def first_n_chars(s, n):
 print(first_n_chars("hello", 5))
 
  ```
-
+# [9]
   ```python
  '''9. Сделать первую букву строки заглавной'''
 
@@ -120,7 +121,7 @@ def capitalize_first(s):
 print(capitalize_first("hello"))
 
  ```
-
+# [10]
    ```python
  '''10. Поменять местами первую и последнюю буквы строки'''
 
@@ -129,6 +130,7 @@ def swap_first_last(s):
 
 print(swap_first_last("hello"))  # "oellh"
  ```
+# [11]
    ```python
  '''11. Найти сумму элементов списка'''
 
@@ -139,6 +141,7 @@ def sum_list(lst):
   return sum
 print(sum_list([1, 2, 3, 4]))
  ```
+# [12]
    ```python
  '''12. Найти максимальный и минимальный элементы списка'''
 
@@ -147,15 +150,14 @@ def min_max(lst):
 
 print(min_max([1, 2, 3, 4]))
  ```
-
-    ```python
+# [13]
+```python
  '''13. Удалить дубликаты из списка'''
 
 def remove_duplicates(lst):
     return list(set(lst))
-
-print(remove_duplicates([1, 2, 3, 3, 4]))
  ```
+# [14]
     ```python
   '''14. Отсортировать список по убыванию'''
 
@@ -165,6 +167,7 @@ def sort_desc(lst):
 
 print(sort_desc([1, 4, 2, 3]))
  ```
+# [15]
     ```python
   '''15. Перевернуть список'''
 
@@ -174,6 +177,7 @@ def reverse_list(lst):
 
 print(reverse_list([1, 2, 3, 4]))
  ```
+# [16]
     ```python
   '''16. Объединить два списка без дубликатов'''
 
@@ -182,6 +186,7 @@ def merge_lists(lst1, lst2):
 
 print(merge_lists([1, 2], [2, 3]))
  ```
+# [17]
     ```python
   '''17. Вернуть список только с четными числами'''
 def even_numbers(lst):
@@ -192,6 +197,7 @@ def even_numbers(lst):
 
 print(even_numbers([1, 2, 3, 4]))
  ```
+# [18]
     ```python
    '''18. Посчитать количество положительных чисел в списке'''
 def count_positive(lst):
@@ -202,7 +208,7 @@ def count_positive(lst):
     return cnt
 print(count_positive([1, -2, 3, 4]))
  ```
-
+# [19]
      ```python
    '''19. Создать список квадратов чисел'''
 def square_numbers(lst):
@@ -212,6 +218,7 @@ def square_numbers(lst):
     return k
 print(square_numbers([1, 2, 3]))
  ```
+# [20]
       ```python
    '''20. Объединить два списка в список кортежей'''
 def pair_lists(lst1, lst2):
@@ -219,6 +226,7 @@ def pair_lists(lst1, lst2):
 
 print(pair_lists([1, 2], ["a", "b"])) 
  ```
+# [21]
       ```python
    '''21. Проверить, является ли строка строкой с уникальными символами'''
 def has_unique_chars(s):
@@ -230,6 +238,7 @@ def has_unique_chars(s):
 print(has_unique_chars("abcdef"))  # True
 print(has_unique_chars("aabbcc"))
  ```
+# [22]
       ```python
    '''22. Найти индекс первого вхождения символа в строке'''
 def first_occurrence(s, char):
@@ -237,6 +246,7 @@ def first_occurrence(s, char):
 
 print(first_occurrence("hello", "l"))
  ```
+# [23]
       ```python
    '''23. Проверить, является ли число простым'''
 def is_prime_simple(n):
@@ -249,6 +259,7 @@ def is_prime_simple(n):
     
     return True
  ```
+# [24]
       ```python
    '''24. Найти количество слов в строке'''
 def word_count(s):
@@ -258,7 +269,7 @@ def word_count(s):
         cnt +=1
     return(cnt+1)
  ```
-
+# [25]
 ```python
 '''25. Найти наибольшее число из двух'''
 def max_of_two(a, b):
@@ -269,6 +280,7 @@ def max_of_two(a, b):
 
 print(max_of_two(3, 5))
  ```
+# [26]
 ```python
 '''26. Найти наименьшее число из двух'''
 def min_of_two(a, b):
@@ -278,6 +290,7 @@ def min_of_two(a, b):
 
 print(min_of_two(3, 5))
  ```
+# [27]
 ```python
 '''27. Проверить, является ли строка числом'''
 def is_number(s):
@@ -290,12 +303,13 @@ def is_number(s):
   else: 
       return False
  ```
-
+# [28]
  ```python
 '''28. Найти длину строки'''
 def string_length(s):
     return len(s)
  ```
+ # [29]
  ```python
  '''29. Найти индекс последнего вхождения символа в строке'''
 def last_occurrence(s, char):
@@ -303,7 +317,7 @@ def last_occurrence(s, char):
 
 print(last_occurrence("hello", "l"))
  ```
-
+# [30]
   ```python
  '''30. Проверить, является ли строка пустой'''
 def is_empty(s):
@@ -312,29 +326,31 @@ def is_empty(s):
     else:
       return False
  ```
-
+# [31]
    ```python
  '''31. Перевести строку в нижний регистр'''
 def to_lower_case(s):
     return s.lower()
  ```
-
+# [32]
     ```python
  '''32. Перевести строку в верхний регистр'''
 def to_upper_case(s):
     return s.upper()
  ```
-
+# [33]
      ```python
  '''33. Найти разницу двух списков'''
 def list_difference(lst1, lst2):
     return [i for i in lst1 if i not in lst2]
  ```
+# [34]
      ```python
  '''34. Найти индекс элемента в спискев'''
 def find_index(lst, value):
   return lst.index(value)
  ```
+# [35]
      ```python
  '''35. Проверить, является ли число четным'''
 def is_even(n):
@@ -343,6 +359,7 @@ def is_even(n):
     else:
       return False
  ```
+# [36]
      ```python
  '''36. Проверить, является ли число нечетным'''
 def is_odd(n):
@@ -351,12 +368,14 @@ def is_odd(n):
     else:
       return False
  ```
+# [37]
      ```python
  '''37. Найти второе по величине число в списке'''
 def second_largest(lst):
     return sorted(lst)[2]
 
  ```
+ # [38]
      ```python
  '''38. Поменять местами два элемента списка'''
 def swap_elements(lst, i, j):
@@ -365,13 +384,13 @@ def swap_elements(lst, i, j):
 
 
  ```
-
+# [39]
       ```python
  '''39. Найти общие элементы двух строк'''
 def common_chars(s1, s2):
     return [i for i in s1 if i in s2]
  ```
-
+# [40]
       ```python
  '''40. Проверить, является ли число палиндромом'''
 def is_number_palindrome(n):
@@ -380,6 +399,7 @@ def is_number_palindrome(n):
     else:
       return False
  ```
+ # [41]
       ```python
  '''41. Найти сумму всех простых чисел до n'''
 def sum_primes(n):
@@ -404,11 +424,13 @@ def sum_primes(n):
             total += i
     return total
  ```
+ # [42]
       ```python
  '''42. Удалить дубликаты из списка, сохранив порядок'''
 def remove_duplicates_ordered(lst):
     return list(set(lst))
  ```
+# [43]
       ```python
   '''43. Проверить, является ли строка панграммой'''
 import string
@@ -417,18 +439,19 @@ def is_pangram(s):
   s_lower = s.lower()
   return len(set(string.ascii_lowercase) - set(s_lower)) == 0
  ```
+ # [44]
       ```python
 '''44. Найти пересечение двух списков'''
 def list_intersection(lst1, lst2):
     return [i for i in lst1 if i in lst2]
  ```
-
+# [45]
        ```python
 '''45. Найти наибольшую общую подстроку двух строк'''
 def list_intersection(lst1, lst2):
     return [i for i in lst1 if i in lst2]
  ```
-
+# [46]
 ```python
 '''46. Найти произведение всех элементов списка'''
 def product_of_list(lst):
@@ -437,6 +460,7 @@ def product_of_list(lst):
       c = i*c
     return c
  ```
+ # [47]
 ```python
 '''47. Проверить, является ли список монотонным'''
 def is_monotonic(lst):
@@ -450,7 +474,7 @@ def is_monotonic(lst):
     
     return increasing or decreasing
  ```
-
+# [48]
  ```python
 '''48. Найти первый неповторяющийся символ в строке'''
 from collections import Counter
@@ -463,6 +487,7 @@ def first_unique_char(s):
             return i
     return None
  ```
+ # [49]
  ```python
  '''49. Найти все перестановки строки'''
 from itertools import permutations
@@ -470,6 +495,7 @@ from itertools import permutations
 def string_permutations(s):
     return [''.join(p) for p in permutations(s)]
  ```
+ # [50]
   ```python
  '''50. Проверить, можно ли составить строку из слов в списке'''
 def can_form_string(words, target):
