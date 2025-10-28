@@ -164,8 +164,6 @@ def remove_duplicates(lst):
 def sort_desc(lst):
     lst.sort(reverse=True)
     return lst
-
-print(sort_desc([1, 4, 2, 3]))
  ```
 # [15]
     ```python
