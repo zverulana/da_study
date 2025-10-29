@@ -186,4 +186,20 @@ from sandbox.departments_zvereva join sandbox.employees_zvereva using (departmen
 order by department_name, hire_date
  ```
 
+  # [14] Задача (29 октября)
+
+  ```sql
+-- Найдите клиентов, у которых максимальная сумма заказа превышает 5000, и выведите их заказы с рангом по сумме
+ 
+with tmp as(select customer_id, customer_name, max(amount) as mx
+from sandbox.customers_zvereva join sandbox.orders_zvereva using (customer_id)
+group by customer_id, customer_name
+having max(amount) > 5000)
+
+select customer_name, order_id, amount,
+rank() over (partition by customer_name order by amount desc) as rank
+from tmp left join sandbox.orders_zvereva using (customer_id) 
+order by customer_name, rank
+ ```
+
 </details>
