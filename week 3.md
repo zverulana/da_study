@@ -658,9 +658,335 @@ def func(list_a):
 
 
 
+<details>
+  <summary>[3] Строки [BASE]</summary>
+
+# [1]
+  ```python
+'''Написать функцию на Python, которая принимает на вход строку и возвращает максимальное количество подряд идущих одинаковых символов в этой строке'''
+
+def func (s):
+  s = s + ' '
+  cnt = 0
+  k = []
+  for i in range (len(s)-1):
+    if s[i] == s[i+1]:
+      cnt +=1
+    else:
+      k.append(cnt+1)
+      cnt = 0
+  return max(k)
+
+func(s)
+ ```
+
+# [2]
+  ```python
+'''Нужно написать функцию, которая выполняет операцию RLE-сжатия, заменяя повторяющиеся символы на один символ и число его повторений'''
+
+def func (s):
+  cnt = 1
+  s = s + ' '
+  s1 = []
+  for i in range (len(s)-1):
+    if s[i] == s[i+1]:
+      cnt += 1
+    else:
+      s1.append(s[i])
+      s1.append(str(cnt))
+      cnt = 1
+  return ''.join(s1) 
+func(s)
+ ```
+
+ # [3]
+  ```python
+'''Написать функцию, которая проверяет строчку на палиндром'''
+def func (s):
+  if s == s[::-1]:
+    return True
+  else:
+    return False
+func(s)
+ ```
+
+  # [4]
+  ```python
+'''Напишите код, который выведет максимальную последовательность повторяющихся символов в строке (сам символ и кол-во повторений'''
+def func (s):
+   max = 0
+   s = s + ' ' 
+   cnt = 1
+   char = ''
+   for i in range (len(s)-1):
+      if s[i] == s[i+1]:
+        cnt += 1
+      else:
+       if cnt > max:
+         max = cnt
+         char = s[i]
+         cnt = 1
+       else: 
+        cnt = 1
+   return max, char
+func(s)
+ ```
+  # [5]
+  ```python
+'''Даны две строки. Нужно проверить, являются ли они анаграммами друг друга. Анаграмма - когда одна строка может быть получена из другой перестановкой букв'''
+def func (s1, s2):
+  if set(s1) == set(s2):
+    return True
+  else: 
+    return False
+
+func(s1, s2)
+ ```
+</details>
+
+<details>
+  <summary>[5] Словарь [BASE]</summary>
+
+# [1]
+  ```python
+def func (d):
+  for key in d:
+    print (f"{key}: {d[key]}") 
+  return
+ ```
+</details>
+
+<details>
+  <summary>[6] Работа с переменными [BASE]</summary>
+
+# [1]
+
+6 - 2 (значения поменялись)
+
+</details>
+
+<details>
+  <summary>[7] Списки и циклы, продвинутые задачки [UPPER]</summary>
+
+# [1]
+  ```python
+'''Написать программу для определения правильности скобочной последовательности'''
+def check (s):
+  s = list(s)
+  flag = True
+  for i in range(len(s)):
+    if s[i] == '(':
+      for g in range(i+1, len(s)):
+        if s[g] == ')':
+          s[i] = 0
+          s[g] = 0
+          break
+
+    if s[i] == '[':
+      for g in range(i+1, len(s)):
+        if s[g] == ']':
+          s[i] = 0
+          s[g] = 0
+          break
+
+    if s[i] == '{':
+      for g in range(i+1, len(s)):
+        if s[g] == '}':
+          s[i] = 0
+          s[g] = 0
+          break
+  for i in s:
+    if i == 0:
+      flag = True
+    else: 
+      flag = False
+      break
+
+  return flag
+
+ ```
+# [2]
+  ```python
+'''Написать функцию, которая преобразует список чисел так, чтобы на месте каждого элемента стояло произведение всех чисел списка, кроме него самого'''
+
+def func(s):
+  l = 1
+  result = []
+  for i in range (len(s)):
+    for g in range (len(s)):
+      l = l*s[g]
+    if s[i] == 0: l = l
+    else: l = int(l/s[i])
+    result.append(l)
+    l = 1
+  return (result)
+
+ ```
+
+ # [3]
+  ```python
+'''Требуется написать скрипт, который считает площади под кривыми и выводит их разницу'''
+
+def trapezoidal_area(roc_curve):
+    area = 0
+    for i in range(len(roc_curve) - 1):
+        x1, y1 = roc_curve[i]
+        x2, y2 = roc_curve[i + 1]
+        area += (y1 + y2) * (x2 - x1) / 2
+    return area
+
+print(abs(trapezoidal_area(A) - trapezoidal_area(B)))
+
+ ```
+</details>
+</details>
 
 
+<details>
+  <summary>Алгосики</summary>
 
+<details>
+  <summary>Array / String</summary>
+
+ # [1] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+ # [2] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+  # [3] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+  # [4] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  # [5] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  # [6] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  </details>
+
+
+<details>
+  <summary>Two Pointers</summary>
+
+ # [1] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+ # [2] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+  # [3] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+  # [4] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  # [5] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  # [6] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  </details>
+
+
+  <details>
+  <summary>Sliding Window</summary>
+
+ # [1] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+ # [2] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+  # [3] - Easy
+  ```python
+''' '''
+
+
+ ```
+
+  # [4] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  # [5] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  # [6] - Medium
+  ```python
+''' '''
+
+
+ ```
+
+  </details>
 
 
 
