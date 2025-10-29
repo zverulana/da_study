@@ -940,7 +940,22 @@ class Solution:
 
  ```
 
-  # [4] - Medium (151. Reverse Words in a String)
+ # [4] - Easy ()
+  ```python
+''' '''
+
+
+ ```
+
+  # [5] - Easy ()
+  ```python
+''' '''
+
+
+ ```
+
+
+  # [6] - Medium (151. Reverse Words in a String)
   ```python
 '''Return a string of the words in reverse order concatenated by a single space'''
 class Solution:
@@ -963,7 +978,7 @@ class Solution:
 
  ```
 
-  # [5] - Medium (238. Product of Array Except Self)
+  # [7] - Medium (238. Product of Array Except Self)
   ```python
 '''The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.'''
 class Solution:
@@ -987,7 +1002,7 @@ class Solution:
 
  ```
 
-  # [6] - Medium (334. Increasing Triplet Subsequence)
+  # [8] - Medium (334. Increasing Triplet Subsequence)
   ```python
 '''Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false'''
 
@@ -1019,6 +1034,13 @@ def increasingTriplet(nums: list[int]):
 
  ```
 
+# [9] - Medium ()
+  ```python
+''' '''
+
+
+ ```
+
   </details>
 
 
@@ -1039,7 +1061,7 @@ def increasingTriplet(nums: list[int]):
 
  ```
 
-  # [3] - Easy
+  # [3] - Medium
   ```python
 ''' '''
 
@@ -1047,20 +1069,6 @@ def increasingTriplet(nums: list[int]):
  ```
 
   # [4] - Medium
-  ```python
-''' '''
-
-
- ```
-
-  # [5] - Medium
-  ```python
-''' '''
-
-
- ```
-
-  # [6] - Medium
   ```python
 ''' '''
 
@@ -1080,35 +1088,14 @@ def increasingTriplet(nums: list[int]):
 
  ```
 
- # [2] - Easy
+ # [2] - Medium
   ```python
 ''' '''
 
 
  ```
 
-  # [3] - Easy
-  ```python
-''' '''
-
-
- ```
-
-  # [4] - Medium
-  ```python
-''' '''
-
-
- ```
-
-  # [5] - Medium
-  ```python
-''' '''
-
-
- ```
-
-  # [6] - Medium
+  # [3] - Medium
   ```python
 ''' '''
 
