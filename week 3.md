@@ -848,7 +848,7 @@ print(abs(trapezoidal_area(A) - trapezoidal_area(B)))
 <details>
   <summary>Array / String</summary>
 
- # [1] - Easy
+ # [1] - Easy (1768. Merge Strings Alternately)
   ```python
 ''' You are given two strings word1 and word2. Merge the strings by adding letters in alternating order, starting with word1. If a string is longer than the other, append the additional letters onto the end of the merged string'''
 
@@ -880,7 +880,7 @@ def mergeAlternately(self, word1, word2):
 
  ```
 
- # [2] - Easy
+ # [2] - Easy (1071. Greatest Common Divisor of Strings)
   ```python
 ''' For two strings s and t, we say "t divides s" if and only if s = t + t + t + ... + t + t (i.e., t is concatenated with itself one or more times).
 
@@ -916,7 +916,7 @@ class Solution(object):
 
  ```
 
-  # [3] - Easy
+  # [3] - Easy (1431. Kids With the Greatest Number of Candies)
   ```python
 '''Return a boolean array result of length n, where result[i] is true if, after giving the ith kid all the extraCandies, they will have the greatest number of candies among all the kids, or false otherwise'''
 
@@ -940,7 +940,7 @@ class Solution:
 
  ```
 
-  # [4] - Medium
+  # [4] - Medium (151. Reverse Words in a String)
   ```python
 '''Return a string of the words in reverse order concatenated by a single space'''
 class Solution:
@@ -987,7 +987,7 @@ class Solution:
 
  ```
 
-  # [6] - Medium
+  # [6] - Medium (334. Increasing Triplet Subsequence)
   ```python
 '''Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false'''
 
