@@ -850,43 +850,172 @@ print(abs(trapezoidal_area(A) - trapezoidal_area(B)))
 
  # [1] - Easy
   ```python
-''' '''
+''' You are given two strings word1 and word2. Merge the strings by adding letters in alternating order, starting with word1. If a string is longer than the other, append the additional letters onto the end of the merged string'''
+
+def mergeAlternately(self, word1, word2):
+        result = []
+        a = len(word1)
+        b = len(word2)
+        if a > b:
+            max = a
+        else: 
+            max = b
+
+        word1 = list(word1)
+        word2 = list(word2)
+        
+
+        if len(word1)>len(word2):
+          for i in range (abs(a-b)):
+            word2.append('')
+        else: 
+          for i in range (abs(a-b)):
+            word1.append('')
+
+        for i in range (max):
+            result.append(word1[i])
+            result.append(word2[i])
+        return ''.join(result)
 
 
  ```
 
  # [2] - Easy
   ```python
-''' '''
+''' For two strings s and t, we say "t divides s" if and only if s = t + t + t + ... + t + t (i.e., t is concatenated with itself one or more times).
+
+Given two strings str1 and str2, return the largest string x such that x divides both str1 and str2'''
+
+class Solution(object):
+    def gcdOfStrings(self, str1, str2):
+      def for_str (str):
+        k = []
+        max = 0
+        result = []
+        for i in range(1, len(str)+1):
+          k.append(str[:i])
+          if len(k[0]) != len(str):
+            if ''.join(k) * int(len(str)/len(k[0])) == str:
+              result.append(k[0])
+          else:
+            result.append(k[0])
+          k = []
+        return result
+    
+      result1 = for_str(str1)
+      result2 = for_str(str2)
+
+      final = [i for i in result2 if i in result1]
+      final.sort(key = len, reverse = True)
+
+      if final == []:
+        return ''
+      else:
+        return ''.join(final[0])
 
 
  ```
 
   # [3] - Easy
   ```python
-''' '''
+'''Return a boolean array result of length n, where result[i] is true if, after giving the ith kid all the extraCandies, they will have the greatest number of candies among all the kids, or false otherwise'''
 
+class Solution:
+    def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
+        flag = True
+        result = []
+        for i in range (len(candies)):
+            for g in range (len(candies)):
+                if candies[i] == candies[g]:
+                    continue 
+                if candies[i] + extraCandies >= candies[g]:
+                    flag = True
+                else:
+                    flag = False
+                    result.append (False)
+                    break
+            if flag == True:
+                result.append (True)
+        return result
 
  ```
 
   # [4] - Medium
   ```python
-''' '''
-
+'''Return a string of the words in reverse order concatenated by a single space'''
+class Solution:
+        def reverseWords(salf,s: str):
+            result = []
+            tmp = []
+            s = s + ' '
+            for i in range (len(s)):
+                if s[i] != ' ':
+                    tmp.append(s[i])
+                else: 
+                    result.append(''.join(tmp))
+                    if s[i-1] != ' ':
+                        result.append(' ')
+                    else:
+                      result.append('')
+                    tmp = []
+            result = result[::-1]
+            return ''.join(result).strip()
 
  ```
 
-  # [5] - Medium
+  # [5] - Medium (238. Product of Array Except Self)
   ```python
-''' '''
+'''The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.'''
+class Solution:
+    def productExceptSelf(self, nums: list[int]) -> list[int]:
+        n = len(nums)
 
+        prefix = [1] * n
+        suffix = [1] * n
+        result = [1] * n
+
+        for i in range(1,n):
+            prefix[i] = prefix[i-1] * nums[i-1]
+
+        for i in range (n-2, -1,-1):
+            suffix[i] = suffix[i+1] * nums[i+1]
+
+        for i in range(n):
+            result[i] = prefix[i] * suffix[i]
+        
+        return result
 
  ```
 
   # [6] - Medium
   ```python
-''' '''
+'''Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k]. If no such indices exists, return false'''
 
+'''Сначала слету написала такое решение'''
+
+class Solution:
+    def increasingTriplet(self, nums: list[int]):
+        flag = False
+        for i in range (len(nums)):
+            for j in range (i, len(nums)):
+                for k in range (j,len(nums)):
+                    if nums[i] < nums[j]< nums[k]:
+                        flag = True
+        return flag
+
+'''Более оптимальное>'''
+
+def increasingTriplet(nums: list[int]):
+    small = mid = float('inf')
+    
+    for num in nums:
+        if num <= small:
+            small = num
+        elif num <= mid:
+            mid = num
+        else:
+            return True
+    return False
 
  ```
 
