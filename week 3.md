@@ -940,17 +940,87 @@ class Solution:
 
  ```
 
- # [4] - Easy ()
+ # [4] - Easy (605. Can Place Flowers)
   ```python
-''' '''
+'''Верните true, если можно посадить n новых цветов на клумбе, не нарушая правило "не сажать цветы на соседних участках", и false в противном случае '''
 
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+      l = len(flowerbed)
+      if n == 0:
+        return True
+      for i in range (l):
+        if flowerbed[i] == 0:
+          if l > 1:
+            if i == 0:
+              if flowerbed[i] == 0 and flowerbed[i+1] == 0:
+                n = n-1
+                flowerbed[i] = 1
 
+            elif i == l-1:
+              if flowerbed[l-1] == 0 and flowerbed[l-2] == 0:
+                n = n-1
+                flowerbed[i] = 1
+
+            else:
+              if flowerbed[i-1] + flowerbed[i+1] == 0:
+                 n = n-1
+                 flowerbed[i] = 1
+          else:
+            n = n-1 
+        if n == 0:
+          return True
+      return False
  ```
 
-  # [5] - Easy ()
+  # [5] - Easy (345. Reverse Vowels of a String)
   ```python
-''' '''
+'''Дана строка s. Необходимо перевернуть только все гласные в строке и вернуть полученную строк '''
 
+''' Мой первый вариант кода'''
+
+def reverseVowels(s: str) -> str:
+  vowels = set('aeiouAEIOU')
+  array = []
+  result = []
+  s = list(s)
+  for i in range (len(s)):
+    if s[i] in vowels:
+      array.append(s[i])
+  array = array[::-1]
+
+  for i in range (len(s)):
+    if s[i] in vowels:
+      result.append(array[0])
+      array = array[1::]
+    else:
+      result.append(s[i])
+
+  return ''.join(result)
+
+
+'''Посмотрела, как можно оптимизировать:'''
+
+def reverseVowels(s: str) -> str:
+  vowels = set('aeiouAEIOU')
+  s_list = list(s)
+  left = 0
+  right = len(s)-1
+
+  while left < right:
+
+    while left < right and s_list[left] not in vowels:
+      left += 1
+    
+    while right > left and s_list[right] not in vowels:
+      right -= 1
+
+    s_list[left], s_list[right] =  s_list[right], s_list[left]
+
+    left += 1
+    right -= 1
+
+  return ''.join(s_list)
 
  ```
 
@@ -1034,10 +1104,48 @@ def increasingTriplet(nums: list[int]):
 
  ```
 
-# [9] - Medium ()
+# [9] - Medium (443. String Compression)
   ```python
-''' '''
+''' Сначала написала такой код'''
 
+def compress(chars: list[str]):
+  last = chars[0]
+  cnt = 0
+  chars.append('')
+  l = len(chars)
+  for i in range(l):
+    if chars[i] == last:
+      cnt += 1
+    else:
+      if cnt == 1:
+        chars.append(last)
+        last = chars[i]
+        cnt = 1
+      else:
+        chars.append(last)
+        chars.append(str(cnt))
+        last = chars[i]
+        cnt = 1
+  return len(chars[l::])
+
+''' Потом пришлось с подсказкой его оптимизировать'''
+
+class Solution:
+    def compress(self, chars: list[str]):
+        i = 0
+        res = 0
+        while i < len(chars):
+            lenght = 1
+            while (i + lenght) < len(chars) and chars[i + lenght] == chars[i]:
+                lenght += 1
+            chars[res] = chars[i]
+            res += 1
+            if lenght > 1:
+                str_tmp = str(lenght)
+                chars[res:res+len(str_tmp)] = list(str_tmp)
+                res += len(str_tmp)
+            i += lenght
+        return res
 
  ```
 
@@ -1047,13 +1155,29 @@ def increasingTriplet(nums: list[int]):
 <details>
   <summary>Two Pointers</summary>
 
- # [1] - Easy
+ # [1] - Easy (283. Move Zeroes)
   ```python
-''' '''
+'''Дан массив целых чисел nums. Переместите все нули в конец массива, сохраняя относительный порядок ненулевых элементов'''
+
+'''Мой первый вариант'''
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        cnt = 0
+        index = []
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                cnt += 1
+                index.append(i)
+        for i in range (cnt):
+            nums.append(0)
+        for i in index[::-1]:
+            del nums[i]
+        return nums
+
+'''Потом я прочитала название Two Pointers и поняла, что должна быть другая логика решения'''
 
 
  ```
-
  # [2] - Easy
   ```python
 ''' '''
