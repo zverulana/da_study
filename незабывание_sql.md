@@ -202,4 +202,17 @@ from tmp left join sandbox.orders_zvereva using (customer_id)
 order by customer_name, rank
  ```
 
+# [15] Задача (30 октября)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата растет по сравнению с предыдущим сотрудником в том же отделе (по дате найма)
+ 
+with tmp as (select id, first_name, last_name, department_id, salary,hire_date,
+lag(id) over (partition by department_id order by hire_date) as lg
+from sandbox.employees_zvereva)
+
+select tmp.first_name, tmp.last_name, tmp.department_id, tmp.salary, tmp.hire_date
+from tmp join sandbox.employees_zvereva e on tmp.lg = e.id and tmp.salary > e.salary
+ ```
+
 </details>
