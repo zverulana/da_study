@@ -1176,13 +1176,42 @@ class Solution:
 
 '''Потом я прочитала название Two Pointers и поняла, что должна быть другая логика решения'''
 
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        write = 0
+        for read in range(len(nums)):
+            if nums[read] != 0:
+                nums[write] = nums[read]
+                write += 1
+        for i in range (write, len(nums)):
+            nums[i] = 0
+        return nums
 
  ```
- # [2] - Easy
+ # [2] - Easy (392. Is Subsequence)
   ```python
-''' '''
+'''Даны две строки s и t. Верните true, если s является подпоследовательностью t, или false в противном случае'''
 
+'''Очень долго решала, но зато в итоге получилось, ещё и работает за 0ms!'''
 
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        i = 0
+        s = list(s)
+        if s == [] or (t == '' and s == []):
+            return True
+        if t == '':
+            return False
+        while i < len(s):
+            index = t.find(s[i])
+            s[i] = index
+            if index != -1:
+                t = '0'* index + '0' + t[index+1:]
+            i += 1
+        if s == sorted(s) and -1 not in s:
+            return True
+        else:
+            return False
  ```
 
   # [3] - Medium
