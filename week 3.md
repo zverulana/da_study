@@ -1214,17 +1214,54 @@ class Solution:
             return False
  ```
 
-  # [3] - Medium
+  # [3] - Medium (11. Container With Most Water)
   ```python
-''' '''
+''' Найдите две линии, которые вместе с осью X образуют контейнер, содержащий наибольшее количество воды.
+Верните максимальный объем воды, который может хранить такой контейнер'''
 
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+            left = 0
+            right = len(height) - 1
+            max_vol = 0
+
+            while left < right:
+                current_vol = (right - left) * min(height[right], height[left])
+                max_vol = max(max_vol, current_vol)
+
+                if height[right] > height[left]:
+                    left += 1
+                else:
+                    right -= 1
+                
+            return max_vol
 
  ```
 
-  # [4] - Medium
+  # [4] - Medium (1679. Max Number of K-Sum Pairs)
   ```python
-''' '''
+''' За одну операцию вы можете выбрать два числа из массива, сумма которых равна k, и удалить их из массива.
+Верните максимальное количество операций, которые вы можете выполнить над массивом'''
 
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        start = 0
+        end = len(nums)-1
+        cnt = 0
+        nums.sort()
+
+        while start < end:  
+            if nums[start] + nums[end] == k:
+                del nums[end]
+                del nums[start]
+                end -= 2
+                cnt += 1
+            elif nums[start] + nums[end] < k:
+                start += 1
+            else:
+                end -= 1
+
+        return cnt
 
  ```
 
@@ -1236,22 +1273,97 @@ class Solution:
 
  # [1] - Easy
   ```python
-''' '''
+''' Найдите непрерывный подмассив (последовательные элементы) длиной k, который имеет максимальное среднее значение, и верните это значение'''
+
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        current_sum = sum(nums[:k])
+        max_sum = current_sum 
+
+        for i in range (k, len(nums)):
+            print(i)
+            current_sum = current_sum - nums[i-k]+nums[i]
+            max_sum = max (current_sum, max_sum)
+
+        return max_sum/k       
+
+ ```
+
+ # [2] - Medium (1456. Maximum Number of Vowels in a Substring of Given Length)
+  ```python
+'''Дана строка s и целое число k. Верните максимальное количество гласных букв в любой подстроке строки s длиной k. '''
+
+class Solution:
+    def maxVowels(self, s: str, k: int) -> int:
+        vowels = set('aeiou')
+        current_cnt = 0
+
+        for i in range (0, k):
+            if s[i] in vowels:
+                current_cnt += 1
+        max_cnt = current_cnt
+
+        for i in range (k, len(s)):
+            if s[i-k] in vowels:
+                current_cnt -= 1
+
+            if s[i] in vowels:
+                current_cnt += 1
+            max_cnt = max(max_cnt, current_cnt)
+        return max_cnt
 
 
  ```
 
- # [2] - Medium
+  # [3] - Medium (1004. Max Consecutive Ones III)
   ```python
-''' '''
+''' Дан бинарный массив nums (состоящий из 0 и 1) и целое число k. Верните максимальное количество последовательных 1 в массиве, если вам разрешено перевернуть (заменить 0 на 1) не более k нулей'''
 
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        left = 0
+        max_length = 0
+        zero_count = 0
+        
+        for right in range(len(nums)):
+            # Если встретили 0, увеличиваем счетчик
+            if nums[right] == 0:
+                zero_count += 1
+            
+            # Если нулей стало больше k, сдвигаем левую границу
+            while zero_count > k:
+                if nums[left] == 0:
+                    zero_count -= 1
+                left += 1
+            
+            # Обновляем максимальную длину
+            max_length = max(max_length, right - left + 1)
+        
+        return max_length   
 
  ```
-
-  # [3] - Medium
+   # [4] - Medium (1493. Longest Subarray of 1's After Deleting One Element)
   ```python
-''' '''
+'''Верните длину самого длинного непустого подмассива, состоящего только из 1, в полученном массиве. Верните 0, если такого подмассива нет '''
 
+class Solution:
+    def longestSubarray(self, nums: List[int]) -> int:
+        left = 0
+        max_length = 0
+        zero_count = 0
+
+        for right in range (len(nums)):
+            if nums[right] == 0:
+                zero_count += 1
+
+            while zero_count > 1:
+                if nums[left] == 0:
+                    zero_count -= 1
+                left += 1
+
+            max_length = max(max_length, right - left)
+
+        return  max_length
 
  ```
 
