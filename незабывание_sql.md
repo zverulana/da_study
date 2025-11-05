@@ -319,12 +319,30 @@ order by mx desc, customer_name, order_id
   ```sql
 -- Найдите сотрудников, чья зарплата выше средней зарплаты сотрудников, на нанятых в том же году, и выведите их отдел
 
+with tmp as(select first_name, last_name, department_name, salary,
+avg(salary) over (partition by extract(year from hire_date)) as ag
+from sandbox.employees_zvereva join sandbox.departments_zvereva using (department_id))
+select first_name, last_name, department_name from tmp
+where salary > ag
+
+ ```
+
+  # [23] Задача (7 ноября)
+
+  ```sql
+-- Выведите заказы с указанием, сколько заказов было сделано клиентом до текущего заказа
 
 
  ```
 
-
-
-
-
   </details>
+
+
+  <details>
+  <summary>8 - 14 ноября</summary>
+
+
+
+
+
+    </details>
