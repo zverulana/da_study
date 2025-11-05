@@ -216,3 +216,115 @@ from tmp join sandbox.employees_zvereva e on tmp.lg = e.id and tmp.salary > e.sa
  ```
 
 </details>
+
+
+
+<details>
+  <summary>31 окт - 6 ноября</summary>
+
+# [16] Задача (31 октября)
+
+  ```sql
+-- Покажите общее количество заказов по клиентам и их долю от всех заказов, но только для заказов за 2024 год
+ 
+select customer_name, 
+count (order_id) as cnt,
+round(count (order_id) * 1.0 / (
+	select count(order_id) from sandbox.orders_zvereva 
+	where order_date >= '2024-01-01' and order_date <= '2024-12-31'), 2) as rate
+from sandbox.customers_zvereva left join sandbox.orders_zvereva using (customer_id) 
+where order_date >= '2024-01-01' and order_date <= '2024-12-31'
+group by customer_name
+
+ ```
+
+ # [17] Задача (1 ноября)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата выше медианной по их отделу
+
+with tmp as (select department_id, 
+percentile_cont(0.5) within group (order by salary) as pc
+from sandbox.employees_zvereva 
+group by department_id)
+select first_name, last_name
+from sandbox.employees_zvereva e inner join tmp on e.department_id = tmp.department_id and salary > pc
+
+ ```
+
+  # [18] Задача (2 ноября)
+
+  ```sql
+-- Найдите заказы, где сумма превышает сумму следующего заказа того же клиента
+with tmp as (select customer_id, order_id, amount,
+lead(amount) over (partition by customer_id order by order_date) as ld
+from sandbox.orders_zvereva)
+select order_id
+from tmp
+where amount>ld
+
+
+ ```
+
+ # [19] Задача (3 ноября)
+
+  ```sql
+-- Выведите отделы с более чем 4 сотрудниками и их среднюю зарплату, добавив ранг отделов по средней зарплате
+with tmp as(
+select department_id, 
+round(avg(salary),0) as ag
+from sandbox.employees_zvereva
+group by department_id
+having count(id) > 4
+)
+select department_name, ag, 
+rank() over (order by ag desc)
+from tmp left join sandbox.departments_zvereva  using (department_id)
+
+
+ ```
+ # [20] Задача (4 ноября)
+
+  ```sql
+-- Покажите сотрудников, чья зарплата составляет более 20% от общей суммы зарплат в их отделе.
+
+with tmp as(
+select department_id, sum(salary) as sm
+from sandbox.employees_zvereva 
+group by department_id
+)
+select first_name, last_name, salary
+from tmp inner join sandbox.employees_zvereva e  on tmp.department_id = e.department_id and
+salary/sm > 0.2
+
+
+ ```
+ # [21] Задача (5 ноября)
+
+  ```sql
+-- Выведите клиентов и их заказы, добавив столбец с максимальной суммой заказа по клиенту. 
+---Показать только заказы за последние 6 месяцев
+
+select customer_name, 
+order_id,
+max(amount) over (partition by customer_name) as mx
+from sandbox.orders_zvereva join sandbox.customers_zvereva using (customer_id)
+where order_date >= current_date - interval '6 month'
+order by mx desc, customer_name, order_id
+
+ ```
+
+ # [22] Задача (6 ноября)
+
+  ```sql
+-- Найдите сотрудников, чья зарплата выше средней зарплаты сотрудников, на нанятых в том же году, и выведите их отдел
+
+
+
+ ```
+
+
+
+
+
+  </details>
