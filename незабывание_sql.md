@@ -327,22 +327,81 @@ where salary > ag
 
  ```
 
-  # [23] Задача (7 ноября)
-
-  ```sql
--- Выведите заказы с указанием, сколько заказов было сделано клиентом до текущего заказа
-
-
- ```
-
   </details>
 
 
   <details>
-  <summary>8 - 14 ноября</summary>
+  <summary>7 - 14 ноября</summary>
 
 
+  # [23] Задача (7 ноября)
+
+  ```sql
+-- Выведите заказы с указанием, сколько заказов было сделано клиентом до текущего заказа
+-- Мой изначальный код
+
+with tmp as(select customer_id, order_date, order_id, count(order_id) as cnt from sandbox.orders_zvereva
+group by customer_id, order_date, order_id
+order by customer_id, order_date),
+
+tmp_2 as(select customer_id, order_date,order_id,
+sum(cnt) over (partition by customer_id order by order_date) as sm
+from tmp)
+
+select order_id, LAG(sm, 1, 0) over (partition by customer_id order by order_date) as lg
+from tmp_2
+
+-- Посмотрела пример
+
+select order_id, 
+count(*) over (partition by customer_id order by order_date rows between unbounded preceding and current row) -1
+from sandbox.orders_zvereva
+
+ ```
+  # [24] Задача (8 ноября)
+
+  ```sql
+-- Найдите отделы, где максимальная зарплата превышает 100000, и выведите сотрудников с их долей от максимальной зарплаты
+
+with tmp as (select department_id,department_name,  max(salary) as mx
+from sandbox.employees_zvereva inner join sandbox.departments_zvereva using (department_id)
+group by department_id, department_name)
+select department_name, first_name, last_name,
+salary/mx*100 as rate
+from tmp inner join sandbox.employees_zvereva  using(department_id)
+where mx > 100000
+
+ ```
+
+# [25] Задача (9 ноября)
+
+  ```sql
+-- Выведите сотрудников и их зарплаты, добавив столбец с разницей от средней зарплаты по всем сотрудникам, нанятым позже
+with tmp as (select first_name, last_name, salary, hire_date, 
+avg(salary) over (partition by department_id order by hire_date rows between 1 following and unbounded following) as diff
+from sandbox.employees_zvereva
+order by hire_date)
+select first_name, last_name, salary, round(salary - diff,2) as diff
+from tmp
+
+ ```
+
+ # [26] Задача (10 ноября)
+
+  ```sql
+-- Покажите клиентов с их общим количеством заказов и рангом по количеству заказов, но только для клиентов с суммой заказов > 10000
+
+with tmp as (select customer_name, 
+count(order_id) as cnt,
+sum(amount) as sm
+from sandbox.customers_zvereva left join sandbox.orders_zvereva using (customer_id)
+group by customer_name)
+select customer_name, 
+rank() over (order by sm desc)
+from tmp
+where sm > 10000
+
+ ```
 
 
-
-    </details>
+</details>
