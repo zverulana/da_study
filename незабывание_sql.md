@@ -403,5 +403,51 @@ where sm > 10000
 
  ```
 
+  # [27] Задача (11 ноября)
+
+  ```sql
+-- Выведите заказы, где сумма заказа выше средней суммы предыдущих заказов клиента
+
+with tmp as (select customer_id, order_id, amount,
+avg(amount) over (partition by customer_id order by order_date rows between UNBOUNDED PRECEDING and 1 PRECEDING) as ag
+from sandbox.orders_zvereva
+order by customer_id, order_date)
+select customer_id, order_id
+from tmp
+where amount > ag
+
+ ```
+# [28] Задача (12 ноября)
+
+  ```sql
+-- Найдите сотрудников, чья зарплата входит в нижние 25% по отделу, и выведите их отдел
+
+with tmp as (select department_id,
+percentile_cont(0.25) within group (order by salary) as q
+from sandbox.employees_zvereva
+group by department_id)
+select department_name, first_name, last_name, salary
+from sandbox.employees_zvereva e inner join  sandbox.departments_zvereva d on e.department_id=d.department_id 
+join tmp on e.department_id = tmp.department_id and e.salary <= tmp.q
+order by department_name
+
+
+ ```
+
+ # [29] Задача (13 ноября)
+
+  ```sql
+-- Выведите клиентов, у которых средняя сумма заказа выше средней суммы всех заказов, и их общее количество заказов
+with tmp as (select customer_name,
+avg(amount) over (partition by customer_id) as ag,
+count(order_id) over (partition by customer_id) as cnt
+from sandbox.orders_zvereva join sandbox.customers_zvereva using (customer_id))
+select customer_name, ag, cnt
+from tmp
+where ag > (select avg(amount) from sandbox.orders_zvereva)
+group by customer_name, ag, cnt
+
+ ```
+
 
 </details>
