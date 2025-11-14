@@ -449,5 +449,24 @@ group by customer_name, ag, cnt
 
  ```
 
-
 </details>
+
+
+
+  <details>
+  <summary>14 - 20 ноября</summary>
+
+# [30] Задача (14 ноября)
+
+  ```sql
+-- Покажите сотрудников, нанятых в первые 10% по дате найма в их отделе, и выведите их зарплату
+
+with tmp as(select first_name, last_name, department_id, salary, hire_date,
+row_number() over (partition by department_id order by hire_date) as rn,
+count(*) over (partition by department_id) as cnt
+from sandbox.employees_zvereva)
+select first_name, last_name, department_id, salary, hire_date, rn, cnt
+from tmp
+where rn <= ceil(cnt*0.1)
+
+ ```
