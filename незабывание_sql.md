@@ -470,3 +470,31 @@ from tmp
 where rn <= ceil(cnt*0.1)
 
  ```
+
+ # [31] Задача (15 ноября)
+
+  ```sql
+-- Выведите заказы, где сумма заказа составляет более 50% от максимальной суммы заказа клиента.
+
+with tmp as (select customer_id, max(amount) as mx
+from sandbox.orders_zvereva
+group by customer_id)
+select customer_name, order_id, amount
+from tmp join sandbox.orders_zvereva using (customer_id) join sandbox.customers_zvereva using (customer_id) 
+where amount > mx/2
+
+ ```
+  # [32] Задача (16 ноября)
+
+  ```sql
+-- Найдите отделы, где минимальная зарплата выше 20000, и выведите сотрудников с их рангом по зарплате
+
+with tmp as(select department_id, min(salary) as mn
+from sandbox.employees_zvereva
+group by department_id)
+select department_name, first_name, last_name, 
+rank() over (partition by tmp.department_id order by salary desc) as rank
+from tmp left join sandbox.employees_zvereva e on tmp.department_id = e.department_id 
+inner join sandbox.departments_zvereva d on tmp.department_id = d.department_id and tmp.mn > 20000 
+
+ ```
