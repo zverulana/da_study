@@ -484,7 +484,7 @@ from tmp join sandbox.orders_zvereva using (customer_id) join sandbox.customers_
 where amount > mx/2
 
  ```
-  # [32] Задача (16 ноября)
+# [32] Задача (16 ноября)
 
   ```sql
 -- Найдите отделы, где минимальная зарплата выше 20000, и выведите сотрудников с их рангом по зарплате
@@ -496,5 +496,17 @@ select department_name, first_name, last_name,
 rank() over (partition by tmp.department_id order by salary desc) as rank
 from tmp left join sandbox.employees_zvereva e on tmp.department_id = e.department_id 
 inner join sandbox.departments_zvereva d on tmp.department_id = d.department_id and tmp.mn > 20000 
+
+ ```
+
+# [33] Задача (17 ноября)
+
+  ```sql
+-- Выведите клиентов и их заказы, добавив столбец с количеством заказов клиента за тот же месяц
+
+select customer_name, order_id,
+count(order_id) over (partition by customer_id, date_trunc('month', order_date)) as cnt
+from sandbox.orders_zvereva join sandbox.customers_zvereva using (customer_id)
+order by customer_name, order_id, cnt
 
  ```
