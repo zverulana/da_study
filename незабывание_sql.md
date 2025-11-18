@@ -510,3 +510,18 @@ from sandbox.orders_zvereva join sandbox.customers_zvereva using (customer_id)
 order by customer_name, order_id, cnt
 
  ```
+
+ # [34] Задача (18 ноября)
+
+  ```sql
+-- Покажите сотрудников, чья зарплата ниже средней зарплаты сотрудников, нанятых раньше, и выведите их отдел
+
+with tmp as (select id, first_name, last_name, department_id, salary,
+avg(salary) over (partition by department_id order by hire_date rows between unbounded preceding and 1 preceding) as ag
+from sandbox.employees_zvereva 
+order by department_id, hire_date)
+select first_name, last_name, department_id, salary
+from tmp
+where salary < ag
+
+ ```
