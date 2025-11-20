@@ -525,3 +525,32 @@ from tmp
 where salary < ag
 
  ```
+
+ [35] Задача (19 ноября)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата выше 75-го процентиля зарплат в их отделе
+
+with tmp as (select department_id,
+percentile_cont (0.75) within group (order by salary) as pc
+from sandbox.employees_zvereva
+group by department_id)
+
+select first_name,  last_name, department_name
+from sandbox.employees_zvereva e 
+join tmp t on e.department_id = t.department_id and e.salary >= t.pc 
+join sandbox.departments_zvereva d on e.department_id = d.department_id
+order by e.department_id, salary
+
+ ```
+
+[36] Задача (20 ноября)
+
+  ```sql
+-- Найдите заказы, сделанные в последний день месяца, и выведите их сумму и клиента
+select order_id, customer_name, amount
+from sandbox.orders_zvereva o join sandbox.customers_zvereva c using (customer_id)
+where order_date = date_trunc('month', order_date) + interval '1 month - 1 day'
+
+
+ ```
