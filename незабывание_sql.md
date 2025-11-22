@@ -551,6 +551,45 @@ order by e.department_id, salary
 select order_id, customer_name, amount
 from sandbox.orders_zvereva o join sandbox.customers_zvereva c using (customer_id)
 where order_date = date_trunc('month', order_date) + interval '1 month - 1 day'
-
-
  ```
+</details>
+
+
+ <details>
+  <summary>21 - 27 ноября</summary>
+
+ # [37] Задача (21 ноября)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата выше средней по всем отделам, и их ранг по зарплате в компании
+with tmp as (select avg(salary) as ag
+from sandbox.employees_zvereva)
+select first_name, last_name, department_name, salary, 
+rank() over (order by salary desc )
+from sandbox.employees_zvereva join sandbox.departments_zvereva using (department_id)
+where salary > (select ag from tmp)
+ ```
+
+  # [38] Задача (22 ноября)
+
+  ```sql
+-- Покажите клиентов, у которых есть заказы в каждом месяце 2024 года, и их общее количество заказов
+WITH monthly_orders AS (
+    SELECT o.customer_id, c.customer_name,
+           COUNT(DISTINCT DATE_TRUNC('month', o.order_date)) AS month_count,
+           COUNT(o.order_id) AS order_count
+    FROM sandbox.orders_zvereva  o
+    JOIN sandbox.customers_zvereva c ON o.customer_id = c.customer_id
+    WHERE EXTRACT(YEAR FROM o.order_date) = 2024
+    GROUP BY o.customer_id, c.customer_name
+    HAVING COUNT(DISTINCT DATE_TRUNC('month', o.order_date)) = 2
+)
+SELECT customer_name, order_count
+FROM monthly_orders
+ ```
+
+
+
+
+
+  </details>
