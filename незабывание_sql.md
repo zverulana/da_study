@@ -587,9 +587,56 @@ WITH monthly_orders AS (
 SELECT customer_name, order_count
 FROM monthly_orders
  ```
+# [39] Задача (23 ноября)
 
+  ```sql
+-- Выведите сотрудников, чья зарплата составляет менее 10% от общей суммы зарплат их отдела
 
+with tmp as (select department_id, department_name, sum(salary) as sm
+from sandbox.employees_zvereva  join sandbox.departments_zvereva using (department_id)
+group by department_id, department_name)
+select first_name, last_name, department_name
+from tmp t join sandbox.employees_zvereva e on  t.department_id = e.department_id and e.salary/t.sm < 0.1
 
+ ```
+ # [40] Задача (24 ноября)
+
+  ```sql
+-- Найдите заказы, где сумма заказа выше суммы всех предыдущих заказов клиента в том же году
+
+with tmp as (select customer_id, order_id, amount,
+sum(amount) over (partition by customer_id, extract(year from order_date) order by order_date rows between unbounded preceding and 1 preceding) as sm
+from sandbox.orders_zvereva)
+select customer_id, order_id from tmp
+where amount > sm
+ ```
+# [41] Задача (25 ноября)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата выше средней зарплаты их отдела за предыдущий год найма
+select e.first_name, e.last_name, e.department_id 
+from sandbox.employees_zvereva e 
+where e.salary > (
+select avg(s2.salary) from sandbox.employees_zvereva s2
+where s2.department_id = e.department_id 
+and extract(year from s2.hire_date) = extract(year from e.hire_date) - 1)
+
+ ```
+# [42] Задача (26 ноября)
+
+  ```sql
+-- Покажите клиентов, у которых максимальная сумма заказа за месяц превышает 10000, и их заказы
+
+with tmp as(select customer_id, sum(amount) as sm, extract (month from order_date) as m, extract (year from order_date) as y
+from sandbox.orders_zvereva
+group by customer_id, extract (month from order_date), extract (year from order_date)
+having sum(amount) > 10000
+order by customer_id)
+select t.customer_id, e.order_id from tmp t join sandbox.orders_zvereva e on t.customer_id = e.customer_id 
+and t.m =  extract (month from e.order_date) and t.y = extract (year from e.order_date)
+group by t.customer_id, e.order_id
+order by t.customer_id, e.order_id
+ ```
 
 
   </details>
