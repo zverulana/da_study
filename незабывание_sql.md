@@ -638,5 +638,18 @@ group by t.customer_id, e.order_id
 order by t.customer_id, e.order_id
  ```
 
+ # [43] Задача (27 ноября)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата равна минимальной зарплате их отдела, и укажите их отдел
+with tmp as (select department_id, min(salary) as mn
+from sandbox.employees_zvereva
+group by department_id)
+select first_name, last_name, department_id from
+tmp join sandbox.employees_zvereva using (department_id)
+where salary = mn
+
+ ```
+
 
   </details>
