@@ -648,8 +648,23 @@ group by department_id)
 select first_name, last_name, department_id from
 tmp join sandbox.employees_zvereva using (department_id)
 where salary = mn
-
  ```
+</details>
 
 
-  </details>
+ <details>
+  <summary>28 - 4 декабря</summary>
+
+   # [44] Задача (28 ноября)
+
+  ```sql
+-- Найдите заказы, где сумма заказа выше средней суммы заказов за предыдущие 3 месяца
+with tmp as (select order_id, customer_id, amount,
+round(avg(amount) over (order by order_date range between interval '3' month preceding and interval '1' day preceding),2) as ag
+from sandbox.orders_zvereva)
+select order_id, customer_id
+from tmp
+where amount > ag
+order by order_id, customer_id
+ ```
+</details>
