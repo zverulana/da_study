@@ -672,7 +672,11 @@ order by order_id, customer_id
 
   ```sql
 -- Выведите сотрудников, чья зарплата выше средней зарплаты сотрудников с более поздней датой найма в том же отделе
-
+with tmp as (select id, first_name, last_name, department_id, salary,
+avg(salary) over (partition by department_id order by hire_date rows between 1 following and unbounded following) as ag
+from sandbox.employees_zvereva t1)
+select first_name, last_name, department_id, salary from tmp
+where salary > ag
  ```
 
 </details>
