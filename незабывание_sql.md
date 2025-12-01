@@ -679,4 +679,30 @@ select first_name, last_name, department_id, salary from tmp
 where salary > ag
  ```
 
+ # [46] Задача (30 ноября)
+
+  ```sql
+-- Покажите клиентов, у которых сумма заказов за каждый квартал 2024 года превышает 5000
+with tmp as (select customer_id, customer_name, date_trunc('quarter', order_date) as quarter,
+sum(amount) over (partition by customer_id, date_trunc('quarter', order_date)) as sm
+from sandbox.orders_zvereva join sandbox.customers_zvereva using (customer_id)
+where extract (year from order_date) = 2024)
+select customer_name, quarter, sm
+from tmp
+where sm > 5000
+group by customer_name, quarter, sm
+ ```
+ # [47] Задача (1 декабря)
+
+  ```sql
+-- Выведите сотрудников, чья зарплата равна второй по величине зарплате в их отделе
+with tmp as (select department_id, first_name, last_name, salary,
+dense_rank() over (partition by department_id order by salary desc) as dr
+from sandbox.employees_zvereva)
+select department_name, first_name, last_name, salary
+from tmp join sandbox.departments_zvereva using (department_id)
+where  dr = 2
+ ```
+
+
 </details>
