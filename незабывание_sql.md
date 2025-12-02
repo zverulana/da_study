@@ -704,5 +704,19 @@ from tmp join sandbox.departments_zvereva using (department_id)
 where  dr = 2
  ```
 
+# [48] Задача (2 декабря)
+
+  ```sql
+-- Найдите заказы, где сумма заказа составляет менее 5% от общей суммы заказов клиента
+with tmp as (select customer_id, sum(amount) as sm
+from sandbox.orders_zvereva 
+group by customer_id)
+select customer_name, order_id
+from sandbox.orders_zvereva o join sandbox.customers_zvereva using (customer_id) 
+join tmp on tmp.customer_id = o.customer_id 
+and amount < 0.05*sm
+order by customer_name, order_id
+ ```
+
 
 </details>
