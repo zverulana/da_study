@@ -718,5 +718,34 @@ and amount < 0.05*sm
 order by customer_name, order_id
  ```
 
+ # [49] Задача (3 декабря)
+
+  ```sql
+-- Выведите сотрудников, нанятых в тот же месяц, что и самый первый сотрудник их отдела
+	with tmp as (select department_id,
+	date_trunc('mm', min(hire_date)) as first
+	from sandbox.employees_zvereva
+	group by department_id)
+	select first_name, last_name, department_id 
+	from sandbox.employees_zvereva e join tmp t on e.department_id = t.department_id  and t.first = date_trunc('mm', e.hire_date)
+
+ ```
+
+# [50] Задача (4 декабря)
+
+  ```sql
+-- Покажите клиентов, у которых каждый заказ имеет сумму выше средней суммы всех их заказов
+with tmp as (select customer_id, customer_name,
+avg(amount) as ag
+from sandbox.orders_zvereva join sandbox.customers_zvereva using (customer_id)
+group by customer_id, customer_name)
+select customer_name
+from tmp t join sandbox.orders_zvereva o on t.customer_id = o.customer_id 
+group by customer_name
+having min(amount) > ag
+order by customer_name
+
+ ```
+
 
 </details>
